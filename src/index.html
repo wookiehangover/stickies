@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>stickies</title>
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/topcoat/topcoat-desktop-dark.css">
+    <link rel="stylesheet" href="styles/icomatic/icomatic.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <div class="sticky">
+      <nav id="main-nav">
+        <a href="#" class="close"><i></i></a>
+        <a href="#" class="menu" data-action="toggle-menu"><i class="icomatic">listview</i></a>
+      </nav>
+
+      <nav class="effeckt-off-screen-nav topcoat-list__container effeckt-off-screen-nav-right-overlay">
+        <h4 class="topcoat-list__header">
+          <a href="#" class="effeckt-off-screen-nav-close" data-action="toggle-menu"><i class="icomatic">listview</i></a>
+        </h4>
+
+        <ul class="topcoat-list">
+          <li class="topcoat-list__item">
+            <a href="#" data-action="new">New <i class="icomatic">plus</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#" data-action="save">Save <i class="icomatic">save</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#">Preview <i class="icomatic">preview</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#">Export <i class="icomatic">share</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#">Settings <i class="icomatic">settings</i></a>
+          </li>
+        </ul>
+      </nav>
+
+      <div id="editor" class="content" contenteditable></div>
+    </div>
+
+    <!-- <script src="app/app.js"></script> -->
+    <script data-main="app/config" src="bower_components/requirejs/require.js"></script>
+
+  </body>
+</html>

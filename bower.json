@@ -1,0 +1,12 @@
+{
+  "name": "chrome-stickies",
+  "version": "0.0.0",
+  "dependencies": {
+    "backbone": "~1.1.0",
+    "lodash": "~2.2.1",
+    "lodash-template-loader": "~0.1.2",
+    "jquery": "~2.0.3",
+    "q": "~0.9.7"
+  },
+  "devDependencies": {}
+}

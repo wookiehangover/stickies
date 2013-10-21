@@ -1,0 +1,127 @@
+@import "components/vendor/topcoat-list-mobile-dark.less";
+@import "components/vendor/bootstrap-mixins.less";
+@import "components/vendor/bootstrap-variables.less";
+
+::selection {
+  background: rgba(0,0,0,0.4);
+  text-shadow: none;
+}
+
+i.icomatic {
+  font-style: normal;
+}
+.effeckt-off-screen-nav {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  background: #333;
+  visibility: hidden;
+  width: 12rem;
+
+  &.effeckt-off-screen-nav-show {
+    visibility: visible;
+    -webkit-transform: translateX(0%);
+  }
+}
+
+@import "components/vendor/effeckt-off-screen-nav.autoprefixed.less";
+
+.topcoat-list__container {
+  a {
+    color: #c6c8c8;
+    text-decoration: none;
+  }
+
+  .topcoat-list__header {
+    font-weight: 200;
+    font-size: 12px;
+    padding: 0;
+    text-align: right;
+    a {
+      padding: 0 2px 0 0;
+      display: inline-block;
+    }
+  }
+
+  .topcoat-list a > i {
+    float: right;
+  }
+
+  .topcoat-list a {
+    width: 100%;
+    height: 100%;
+    .transition(color 200ms);
+
+    &:hover {
+      color: #e2e2e2;
+    }
+  }
+
+}
+
+
+
+body {
+  background: lightgrey;
+}
+
+#main-nav {
+  -webkit-app-region: drag;
+  height: 17px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 0 2px;
+  border-bottom: 1px solid #666;
+  background: rgba(0,0,0,0.1);
+
+  a {
+    text-decoration: none;
+    text-align: center;
+    font-size: 12px;
+    line-height: 17px;
+    color: #666;
+    height: 17px;
+    width: 17px;
+
+    &.close i {
+      border: 1px solid #666;
+      .size(7px, 7px);
+      display: inline-block;
+      margin-top: 5px;
+
+      &:hover {
+        background: #919191;
+      }
+    }
+
+    &.close, &.maximize, &.minimize {
+      float: left;
+    }
+
+    &.menu {
+      float: right;
+    }
+  }
+}
+
+
+
+.content {
+  position: absolute;
+  top: 13px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  margin: 0;
+  overflow: scroll;
+  white-space: pre-wrap;
+  // font-size: 16px;
+  // font: 16px "Source Sans", helvetica, arial, sans-serif;
+  // font-weight: 200;
+}
