@@ -13,8 +13,17 @@ function launchSticky(model){
 }
 
 chrome.app.runtime.onLaunched.addListener(function() {
+
   chrome.storage.sync.get(null, function(data){
-    Object.keys(data).forEach(function(key){
+    var keys = Object.keys(data);
+
+    if( keys.length === 0 ){
+      return launchSticky({
+        content: "#Welcome to Stickies"
+      });
+    }
+
+    keys.forEach(function(key){
       launchSticky(data[key]);
     });
   });
