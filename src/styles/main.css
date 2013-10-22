@@ -2109,3 +2109,26 @@ body {
   font-weight: 200;
   resize: none;
 }
+.preview {
+  display: none;
+  position: absolute;
+  top: 18px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  background: #f1f1f1;
+  overflow: scroll;
+}
+.preview :first-child {
+  margin-top: 0px;
+}
+nav .hide-preview {
+  display: none;
+}
+.preview-active nav .show-preview {
+  display: none;
+}
+.preview-active nav .hide-preview {
+  display: block;
+}

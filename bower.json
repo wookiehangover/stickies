@@ -6,7 +6,8 @@
     "lodash": "~2.2.1",
     "lodash-template-loader": "~0.1.2",
     "jquery": "~2.0.3",
-    "q": "~0.9.7"
+    "q": "~0.9.7",
+    "marked": "~0.2.9"
   },
   "devDependencies": {}
 }

@@ -7,15 +7,20 @@ define(function(require, exports, module){
 
   var StickyModel = require('./models/sticky');
   var EditorView = require('./views/editor');
+  var PreviewView = require('./views/preview');
 
   module.exports = Backbone.View.extend({
     el: $('body'),
 
     initialize: function(){
       this.model = new StickyModel( window.stickyModel || {} );
+
       this.editor = new EditorView({ model: this.model });
+      this.preview = new PreviewView({ model: this.model });
+
       this.$nav = this.$('.effeckt-off-screen-nav');
       this.$loader = this.$('#loader');
+
       this.render();
 
       $(window).keydown(this.keydown.bind(this));
@@ -30,17 +35,52 @@ define(function(require, exports, module){
       'click [data-action="toggle-menu"]': 'toggleMenu',
       'click [data-action="save"]': 'save',
       'click [data-action="new"]': 'spawn',
-      'click [data-action="destroy"]': 'destroy'
+      'click [data-action="destroy"]': 'destroy',
+      'click [data-action="preview"]': 'showPreview',
+      'click [data-action="edit"]': 'hidePreview',
+    },
+
+    hidePreview: function(e){
+      if( e ){
+        e.preventDefault();
+      }
+      this.dismissMenu();
+      this.$el.removeClass('preview-active');
+      this.preview.$el.fadeOut();
+    },
+
+    showPreview: function(e){
+      if( e ){
+        e.preventDefault();
+      }
+
+      var data = {
+        content: this.editor.getContent()
+      };
+
+      this.model.save(data).then(function(){
+        this.dismissMenu();
+        this.$el.addClass('preview-active');
+        this.preview.render();
+        this.preview.$el.fadeIn();
+      }.bind(this));
     },
 
     keydown: function(e){
-      // console.log(e)
-      // if( e.which === 87 && e.metakey ){ // command-w
-      //   this.close();
-      //   return false;
-      // }
+      // console.log(e.which);
+      if( e.which === 27 ){ // esc
+        if( this.$el.hasClass('preview-active') ){
+          this.hidePreview();
+          return false;
+        }
+      }
 
-      if( e.which === 78 && e.metakey ){ // command-n
+      if( e.which === 80 && e.metaKey ){ // command-p
+        this.showPreview();
+        return false;
+      }
+
+      if( e.which === 78 && e.metaKey ){ // command-n
         this.spawn();
         return false;
       }

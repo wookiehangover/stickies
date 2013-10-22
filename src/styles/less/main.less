@@ -8,6 +8,14 @@
   text-shadow: none;
 }
 
+.fitBody(){
+  position: absolute;
+  top: 18px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 i.icomatic {
   font-style: normal;
 }
@@ -132,11 +140,7 @@ body {
 
 .content {
   background: transparent;
-  position: absolute;
-  top: 18px;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  .fitBody();
   padding: 10px;
   margin: 0;
   overflow: scroll;
@@ -146,4 +150,30 @@ body {
   font: 16px "Source Sans", helvetica, arial, sans-serif;
   font-weight: 200;
   resize: none;
+}
+
+.preview {
+  position: absolute;
+  display: none;
+  .fitBody();
+  padding: 10px;
+  background: #f1f1f1;
+  overflow: scroll;
+
+  :first-child {
+    margin-top: 0px;
+  }
+}
+
+nav .hide-preview {
+  display: none;
+}
+
+.preview-active {
+  nav .show-preview{
+    display: none;
+  }
+  nav .hide-preview {
+    display: block;
+  }
 }

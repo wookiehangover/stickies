@@ -6,6 +6,7 @@
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/topcoat/topcoat-desktop-dark.css">
     <link rel="stylesheet" href="styles/icomatic/icomatic.css">
+    <link rel="stylesheet" href="styles/markdownpad-github.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
@@ -28,8 +29,11 @@
           <li class="topcoat-list__item">
             <a href="#" data-action="save">Save <i class="icomatic">save</i></a>
           </li>
-          <li class="topcoat-list__item">
-            <a href="#">Preview <i class="icomatic">preview</i></a>
+          <li class="topcoat-list__item hide-preview">
+            <a href="#" data-action="edit">Edit <i class="icomatic">pencil</i></a>
+          </li>
+          <li class="topcoat-list__item show-preview">
+            <a href="#" data-action="preview">Preview <i class="icomatic">preview</i></a>
           </li>
           <li class="topcoat-list__item">
             <a href="#">Export <i class="icomatic">share</i></a>
@@ -44,6 +48,8 @@
       </nav>
 
       <textarea id="editor" class="content"></textarea>
+
+      <div class="preview"></div>
 
       <div id="loader"><span>Saved</span></div>
     </div>
