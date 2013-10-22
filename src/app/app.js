@@ -2,6 +2,7 @@ define(function(require, exports, module){
 
   'use strict';
   var $ = require('jquery');
+  var _ = require('lodash');
   var Backbone = require('backbone');
 
   var StickyModel = require('./models/sticky');
@@ -13,9 +14,11 @@ define(function(require, exports, module){
     initialize: function(){
       this.model = new StickyModel( window.stickyModel || {} );
       this.editor = new EditorView({ model: this.model });
+      this.$nav = this.$('.effeckt-off-screen-nav');
+      this.$loader = this.$('#loader');
       this.render();
 
-      $(window).resize(this.updateBounds.bind(this));
+      $(window).keydown(this.keydown.bind(this));
     },
 
     render: function(){
@@ -26,15 +29,43 @@ define(function(require, exports, module){
       'click .close': 'close',
       'click [data-action="toggle-menu"]': 'toggleMenu',
       'click [data-action="save"]': 'save',
-      'click [data-action="new"]': 'spawn'
+      'click [data-action="new"]': 'spawn',
+      'click [data-action="destroy"]': 'destroy'
     },
 
-    updateBounds: function(e){
-      console.log(chrome.app.window.current());
+    keydown: function(e){
+      // console.log(e)
+      // if( e.which === 87 && e.metakey ){ // command-w
+      //   this.close();
+      //   return false;
+      // }
+
+      if( e.which === 78 && e.metakey ){ // command-n
+        this.spawn();
+        return false;
+      }
+
+      if( e.which === 83 && e.metaKey ){ // Command-s
+        this.save();
+        return false;
+      }
+    },
+
+    destroy: function(e){
+      e.preventDefault();
+
+      // TODO
+      // trigger a modal to confirm
+
+      this.model.destroy({ target: 'sync' }).done(function(){
+        window.close();
+      });
     },
 
     spawn: function(e){
-      e.preventDefault();
+      if( e ){
+        e.preventDefault();
+      }
 
       var model = new StickyModel();
 
@@ -51,16 +82,25 @@ define(function(require, exports, module){
     },
 
     save: function(e){
-      e.preventDefault();
-      this.model.save({
+      if( e ){
+        e.preventDefault();
+      }
+
+      this.showLoader();
+      var data = {
         content: this.editor.getContent()
-      }, { target: 'sync' }).done(function(){
-        //TODO success message?
-      });
+      };
+
+      this.model.save(data, { target: 'sync' }).then(function(){
+        this.dismissMenu();
+        this.hideLoader();
+      }.bind(this));
     },
 
     close: function(e){
-      e.preventDefault();
+      if( e ){
+        e.preventDefault();
+      }
       this.model.save({
         content: this.editor.getContent()
       }, { target: 'sync' }).done(function(){
@@ -68,9 +108,27 @@ define(function(require, exports, module){
       });
     },
 
+    showLoader: function(message){
+      if( message ){
+        this.$loader.text(message);
+      }
+      this.$loader.fadeIn();
+    },
+
+    hideLoader: function(wait){
+      var self = this;
+      _.delay(function(){
+        self.$loader.fadeOut();
+      }, wait || 800);
+    },
+
+    dismissMenu: function(){
+      this.$nav.removeClass('effeckt-off-screen-nav-show');
+    },
+
     toggleMenu: function(e){
       e.preventDefault();
-      this.$('.effeckt-off-screen-nav').toggleClass('effeckt-off-screen-nav-show');
+      this.$nav.toggleClass('effeckt-off-screen-nav-show');
     }
   });
 

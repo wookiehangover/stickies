@@ -23,7 +23,8 @@ define(function(require, exports, module){
 
     events: {
       'keydown': 'keydown',
-      'blur': 'storeContent'
+      'blur': 'storeContent',
+      'change': 'storeContent'
     },
 
     storeContent: function(){
@@ -31,25 +32,17 @@ define(function(require, exports, module){
     },
 
     keydown: function(e){
-      // console.log(e.which)
       if( e.which === 9 ){ // Tab Key
-        // TODO pull the tab chat from user settings
+        // TODO pull the tab char from user settings
         document.execCommand('insertText', false, '\t');
         return false;
       }
+
       this.model.debouncedSave({ content: this.getContent() });
     },
 
     getContent: function(){
-      var content = this.$el.html();
-
-      content = content.replace(/<br>/gi, '\n')
-        .replace(/<div>/gm, '\n')
-        .replace(/<(?:.|\n)*?>/gm, '')
-        .replace(/&lt;/gi, '<')
-        .replace(/&gt;/gi, '>');
-
-      return content;
+      return this.$el.val();
     }
   });
 

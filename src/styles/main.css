@@ -2070,14 +2070,42 @@ body {
 #main-nav a.menu {
   float: right;
 }
-.content {
+#loader {
+  display: none;
+  z-index: 1000;
+  width: 120px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.8);
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  margin: auto;
   position: absolute;
-  top: 13px;
-  bottom: 0;
+  top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
+}
+#loader span {
+  font-size: 24px;
+  line-height: 80px;
+}
+.content {
+  background: transparent;
+  position: absolute;
+  top: 18px;
+  left: 0;
+  bottom: 0;
   right: 0;
   padding: 10px;
   margin: 0;
   overflow: scroll;
-  white-space: pre-wrap;
+  width: calc(100% - 20px);
+  border: none;
+  font-size: 16px;
+  font: 16px "Source Sans", helvetica, arial, sans-serif;
+  font-weight: 200;
+  resize: none;
 }

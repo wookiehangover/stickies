@@ -1,10 +1,10 @@
 {
     "appName": {
-        "message": "stickies",
-        "description": "The name of the application"
+        "message": "Stickies2",
+        "description": "Simple notes written in Github Flavored Markdown"
     },
     "appDescription": {
-        "message": "sticky notes",
-        "description": "The description of the application"
+        "message": "Sticky notes",
+        "description": "Simple notes written in Github Flavored Markdown"
     }
 }

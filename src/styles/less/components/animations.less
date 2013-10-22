@@ -1,0 +1,49 @@
+.animate-fadeIn(@time: 1s; @from: 0; @to: 100; @delay: 0s;) {
+  -webkit-animation: animate-fadeIn @time @delay;
+     -moz-animation: animate-fadeIn @time @delay;
+       -o-animation: animate-fadeIn @time @delay;
+          animation: animate-fadeIn @time @delay;
+
+  @-webkit-keyframes animate-fadeIn {
+    from { .opacity(@from); }
+    to { .opacity(@to); }
+  }
+  @-moz-keyframes animate-fadeIn {
+    from { .opacity(@from); }
+    to { .opacity(@to); }
+  }
+  @-o-keyframes animate-fadeIn {
+    from { .opacity(@from); }
+    to { .opacity(@to); }
+  }
+  @keyframes animate-fadeIn {
+    from { .opacity(@from); }
+    to { .opacity(@to); }
+  }
+}
+
+.animate-fadeOut(@time: 1s; @from: 100; @to: 0; @delay: 0s;) {
+  -webkit-animation: animate-fadeOut @time @delay;
+     -moz-animation: animate-fadeOut @time @delay;
+       -o-animation: animate-fadeOut @time @delay;
+          animation: animate-fadeOut @time @delay;
+
+  @-webkit-keyframes animate-fadeOut {
+    from { .opacity(@from); }
+    to { .opacity(@to); }
+  }
+  @-moz-keyframes animate-fadeOut {
+    from { .opacity(@from); }
+    to { .opacity(@to); }
+  }
+  @-o-keyframes animate-fadeOut {
+    from { .opacity(@from); }
+    to { .opacity(@to); }
+  }
+  @keyframes animate-fadeOut {
+    from { .opacity(@from); }
+    to { .opacity(@to); }
+  }
+}
+
+
