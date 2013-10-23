@@ -27,9 +27,13 @@ config =
     compile:
       options:
         mainConfigFile: 'src/app/config.js'
+        generateSourceMaps: true
+        include: ["main"],
+        insertRequire: ["main"],
         out: 'dist/scripts/app.js'
         optimize: 'uglify2'
-        wrap: false
+        findNestedDependencies: true,
+        wrap: true
         preserveLicenseComments: false
         almond: true
 
@@ -76,13 +80,9 @@ config =
       ]
 
   useminPrepare:
-    html: "src/index.html"
+    html: "src/sticky.html"
     options:
       dest: "dist"
-      flow:
-        steps:
-          js: ['requirejs']
-          post: []
 
   usemin:
     options:
@@ -117,7 +117,15 @@ config =
         dot: true
         cwd: "<%= yeoman.src %>"
         dest: "<%= yeoman.dist %>"
-        src: ["*.{ico,png,txt}", "images/{,*/}*.{webp,gif}", "_locales/{,*/}*.json", "manifest.json", "scripts/background.js"]
+        src: [
+          "*.{ico,png,txt}"
+          "styles/**/*"
+          "images/**/*"
+          "_locales/{,*/}*.json"
+          "manifest.json"
+          "scripts/background.js"
+          "scripts/*.map"
+        ]
       ,
         expand: true
         cwd: ".tmp/images"
@@ -153,7 +161,7 @@ module.exports = (grunt) ->
     "useminPrepare"
     "concurrent:dist"
     "concat"
-    "cssmin"
+    # "cssmin"
     "copy"
     "usemin"
   ]
