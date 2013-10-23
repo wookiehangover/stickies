@@ -1,0 +1,38 @@
+.preview {
+  position: absolute;
+  display: none;
+  .fitBody();
+  padding: 10px;
+  background: #f1f1f1;
+  overflow: scroll;
+
+  > :first-child {
+    margin-top: 0px;
+  }
+
+  .checklist {
+    padding: 0;
+    list-style: none;
+
+    li .topcoat-checkbox__checkmark {
+      margin-right: 10px;
+    }
+
+    li label.checked {
+      text-decoration: line-through;
+    }
+  }
+}
+
+nav .hide-preview {
+  display: none;
+}
+
+.preview-active {
+  nav .show-preview{
+    display: none;
+  }
+  nav .hide-preview {
+    display: block;
+  }
+}

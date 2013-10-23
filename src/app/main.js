@@ -1,10 +1,10 @@
 define(function(require, exports, module){
 
   var $ = require('jquery');
-  var App = require('./app');
+  var Sticky = require('./components/sticky/main');
 
   $(function(){
-    window.app = new App();
+    window.sticky = new Sticky();
   });
 
 });

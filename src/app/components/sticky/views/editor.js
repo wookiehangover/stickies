@@ -7,7 +7,6 @@ define(function(require, exports, module){
   var dependencyNeedle = require('mixins/dependencyNeedle');
 
   var EditorView = Backbone.View.extend({
-    el: $('.content'),
 
     dependencies: function(){
       return ['model'];
@@ -15,6 +14,7 @@ define(function(require, exports, module){
 
     initialize: function(options){
       this.injectDependencies(options, this.dependencies());
+      this.listenTo(this.model, 'change:content', this.render);
     },
 
     render: function(){
@@ -28,7 +28,7 @@ define(function(require, exports, module){
     },
 
     storeContent: function(){
-      this.model.throttledSave({ content: this.getContent() });
+      this.model.throttledSave({ content: this.getContent() }, { silent: true });
     },
 
     keydown: function(e){

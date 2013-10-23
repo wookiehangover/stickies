@@ -1,0 +1,40 @@
+.main-header {
+  -webkit-app-region: drag;
+  height: 17px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 0 2px;
+  border-bottom: 1px solid #666;
+  background: rgba(0,0,0,0.1);
+
+  a {
+    text-decoration: none;
+    text-align: center;
+    font-size: 12px;
+    line-height: 17px;
+    color: #666;
+    height: 17px;
+    width: 17px;
+
+    &.close i {
+      border: 1px solid #666;
+      .size(7px, 7px);
+      display: inline-block;
+      margin-top: 5px;
+
+      &:hover {
+        background: #919191;
+      }
+    }
+
+    &.close, &.maximize, &.minimize {
+      float: left;
+    }
+
+    &.menu {
+      float: right;
+    }
+  }
+}
