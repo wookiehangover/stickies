@@ -5,7 +5,7 @@ define(function(require, exports, module){
   var _ = require('lodash');
   var googleStorageSync = require('mixins/google-storage-sync');
 
-  var listItemRegex = /^- \[.\]/;
+  var listItemRegex = /- \[.\]/;
 
   var StickyModel = Backbone.Model.extend({
 

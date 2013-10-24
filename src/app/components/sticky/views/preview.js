@@ -51,29 +51,40 @@ define(function(require, exports, module){
 
     renderChecklist: function($markdown){
       var self = this;
-      $markdown.find('li').each(function(index){
+      var index = 0;
+
+      $markdown.find('li').each(function(){
         var $li = $(this);
         var parts = checkListRegex.exec($li.text());
-        if( parts && parts.length > 1 ){
 
-          $li.html(checkboxTemplate({
-            checked: parts[1] === 'x',
-            content: parts[2],
-            name: 'todo_'+index
-          }));
-
-          $li.on('change', 'input', function(e){
-            var text = self.checklist[index].content;
-            var checked = $(e.currentTarget).is(':checked') === 'on' ? 'x': ' ';
-            if( checked === ' ' ){
-              $li.find('.checked').removeClass('checked');
-            }
-            text = text.replace(/\[.\]/, '['+ checked +']');
-            self.model.replaceLine(self.checklist[index].line, text);
-          });
-
-          $li.parent().addClass('checklist');
+        if( !parts || parts.length < 3 ){
+          return;
         }
+
+        var line = self.checklist[index];
+        if( !line ){
+          return;
+        }
+
+        $li.html(checkboxTemplate({
+          checked: parts[1] === 'x',
+          content: parts[2],
+          name: 'todo_'+index
+        }));
+
+        $li.on('change', 'input', function(e){
+          var text = line.content;
+          var checked = $(e.currentTarget).is(':checked') ? 'x': ' ';
+
+          $li.find('label')[ checked === 'x' ? 'addClass':'removeClass' ]('checked');
+
+          text = text.replace(/\[.\]/, '['+ checked +']');
+          self.model.replaceLine(line.line, text);
+        });
+
+        $li.parent().addClass('checklist');
+
+        index += 1;
       });
     }
   });
