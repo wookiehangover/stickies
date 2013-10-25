@@ -26,7 +26,7 @@ config =
   requirejs:
     compile:
       options:
-        mainConfigFile: 'src/app/config.js'
+        mainConfigFile: 'src/app/require-config.js'
         generateSourceMaps: true
         include: ["main"],
         insertRequire: ["main"],

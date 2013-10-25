@@ -2,10 +2,12 @@
 define(function(require, exports, module){
   'use strict';
 
+  var config = require('config').github;
+
   // Replace clientId and clientSecret with values obtained by you for your
   // application https://github.com/settings/applications. 
-  var clientId = '';
-  var clientSecret = '';
+  var clientId = config.id;
+  var clientSecret = config.secret;
   var redirectUri = 'https://' + chrome.runtime.id +
                     '.chromiumapp.org/provider_cb';
   var redirectRe = new RegExp(redirectUri + '[#\?](.*)');

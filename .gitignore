@@ -4,3 +4,5 @@ temp
 dist
 .sass-cache
 src/bower_components
+src/app/config.js
+dist.zip
