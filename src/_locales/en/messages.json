@@ -24,6 +24,13 @@ Here are a few keyboard shortcuts to make things a bit easier:
 * Make a new sticky with `Command-n`.
 * To **fork** the current sticky, use `Command-Shift-N`.
 * Delte a sticky with `Command-Shift-d`.
+* Edit a sticky's settings `Command-,`.
+
+## Export as Gist
+
+In addition to persisting with your Google account, Stickies can be exported to a Github Gist, where you get a detailed history of revisions and a simple way to share your notes with others.
+
+To save the current Sticky to a Gist, select the `Export to Gist` item from the menu.
 
 ## TODO Lists
 
