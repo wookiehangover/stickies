@@ -58,10 +58,17 @@ define(function(require, exports, module){
 
     hideActiveView: function(){
       if( this.activeView ){
+        this.editor.render();
         this.$el.removeClass(this.activeView.name + '-active');
         this.activeView.$el.fadeOut();
-        this.editor.render();
       }
+    },
+
+    email: function(){
+      window.open('mailto:?subject=' +
+                  'Sticky Note: '+ this.model.getTitle() +
+                  '&body=' +
+                  encodeURIComponent(this.model.get('content')) );
     },
 
     export: function(){

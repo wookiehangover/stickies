@@ -44,9 +44,13 @@ define(function(require, exports, module){
 
     render: function(){
       this.checklist = this.model.getChecklist();
-      var $markdown = $(marked(this.model.get('content')));
+      var $markdown = $(this.renderMarkdown());
       this.renderChecklist($markdown);
       this.$('article').html($markdown);
+    },
+
+    renderMarkdown: function(){
+      return marked(this.model.get('content'));
     },
 
     renderChecklist: function($markdown){

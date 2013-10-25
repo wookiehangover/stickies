@@ -46,7 +46,13 @@ define(function(require, exports, module){
       'click [data-action="preview"]': 'showPreview',
       'click [data-action="edit"]': 'hidePreview',
       'click [data-action="settings"]': 'toggleSettings',
-      'click [data-action="export"]': 'handleExport'
+      'click [data-action="export"]': 'handleExport',
+      'click [data-action="email"]': 'handleEmail'
+    },
+
+    handleEmail: function(e){
+      e.preventDefault();
+      this.email();
     },
 
     handleExport: function(e){

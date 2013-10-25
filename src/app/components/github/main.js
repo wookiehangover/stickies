@@ -45,7 +45,7 @@ define(function(require, exports, module){
     },
 
     parse: function(resp){
-      console.log(resp);
+      resp = resp || {};
       if( resp.gist ){
         this.gist.set(resp.gist);
       }
