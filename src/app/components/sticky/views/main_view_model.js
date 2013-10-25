@@ -3,13 +3,14 @@ define(function(require, exports, module){
   'use strict';
   var $ = require('jquery');
   var _ = require('lodash');
+  var keytar = require('./keytar');
   var Backbone = require('backbone');
 
-  module.exports = Backbone.View.extend({
+  var MainViewModel = Backbone.View.extend({
 
     initialize: function(){
       this.render();
-      $(window).keydown(this.keydown.bind(this));
+      $(window).keydown(this.handleKeydown.bind(this));
 
       this.updateBackgroundColor();
       this.updateTextColor();
@@ -34,58 +35,6 @@ define(function(require, exports, module){
 
     render: function(){
       this.editor.render();
-    },
-
-    keydown: function(e){
-      // console.log(e.which);
-
-      if( e.which === 27 ){ // esc
-        this.hideActiveView();
-        return false;
-      }
-
-      if( e.metaKey === false ){
-        return;
-      }
-
-      if( e.which === 87 ){ // command-w
-        this.close();
-        return false;
-      }
-
-      if( e.which === 68 && e.shiftKey ){ // Command-d
-        this.destroy();
-        return false;
-      }
-
-      if( e.which === 80 ){ // Command-p
-        if( this.$el.hasClass('preview-active') ){
-          this.hideActiveView();
-        } else {
-          this.showView(this.preview);
-        }
-        return false;
-      }
-
-      if( e.which === 188 ){ // Command-,
-        this.toggleSettings();
-        return false;
-      }
-
-      if( e.which === 78 ){ // Command-n
-        var data = {};
-        if( e.shiftKey ){
-          data = _.omit(this.model.toJSON(), 'id');
-        }
-        this.spawn(data);
-        return false;
-      }
-
-      if( e.which === 83 ){ // Command-s
-        this.save();
-        return false;
-      }
-
     },
 
     events: {
@@ -154,5 +103,9 @@ define(function(require, exports, module){
       }
     }
   });
+
+  _.extend(MainViewModel.prototype, keytar);
+
+  module.exports = MainViewModel;
 
 });
