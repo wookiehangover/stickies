@@ -13,7 +13,6 @@ define(function(require, exports, module){
 
     initialize: function(options){
       this.injectDependencies(options, this.dependencies());
-      this.listenTo(this.model, 'change:content', this.render);
     },
 
     render: function(){
