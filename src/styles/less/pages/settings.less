@@ -1,0 +1,87 @@
+.settings {
+  position: absolute;
+  display: none;
+  .fitBody();
+  padding: 10px;
+  background:#333;
+  color: #c6c8c8;
+  overflow: scroll;
+
+  .form {
+    float: left;
+    background-color: #454646;
+  }
+
+  .form-row {
+    float: left;
+    width: ~"calc(100% - 2.5rem)";
+    padding: 1.25rem;
+    border-top: 1px solid #616363;
+    border-bottom: 1px solid #333434;
+
+    label {
+      float: left;
+    }
+  }
+
+  .background-color {
+    float: left;
+
+    ul {
+      float: left;
+      clear: both;
+      list-style: none;
+      margin: 1em 0;
+      padding: 0;
+      width: 9em;
+      border: 1px solid #fff;
+
+      li {
+        width: 3em;
+        height: 3em;
+        text-align: center;
+        float: left;
+        cursor: pointer;
+
+        i {
+          line-height: 3em;
+          font-size: 16px;
+          display: none;
+        }
+
+        &.active {
+          i { display: block; }
+        }
+      }
+    }
+
+    .color-preview {
+      float: left;
+      width: 9em;
+      height: 9em;
+      margin: 1em;
+      line-height: 9em;
+      display: block;
+      text-align: center;
+      border: 1px solid #fff;
+
+      i {
+        font-size: 32px;
+      }
+    }
+
+  }
+
+  .text-color {
+    float: left;
+    .control-group {
+      margin-top: 1em;
+      float: left;
+      clear: both;
+    }
+
+    .topcoat-radio-button__checkmark {
+      margin-right: 5px;
+    }
+  }
+}

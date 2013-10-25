@@ -21,10 +21,13 @@ define(function(require, exports, module){
       data = model.id;
     }
 
-    chrome.storage[target][action](data, function(){
+    chrome.storage[target][action](data, function(resp){
       var error = chrome.runtime.lastError;
       if( error ){
         return dfd.reject(error);
+      }
+      if( action === 'get' ){
+        model.set( model.parse(resp[data]) );
       }
       console.log(target +' sync successful');
       dfd.resolve(model.toJSON());

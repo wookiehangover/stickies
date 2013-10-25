@@ -21,7 +21,7 @@ define(function(require, exports, module){
     ].join('');
   };
 
-  var checkListRegex = /^\[(.)\]\s(.+)/;
+  var checkListRegex = /\[(.)\]\s(.+)/;
 
   var PreviewView = Backbone.View.extend({
 
@@ -46,7 +46,7 @@ define(function(require, exports, module){
       this.checklist = this.model.getChecklist();
       var $markdown = $(marked(this.model.get('content')));
       this.renderChecklist($markdown);
-      this.$el.html($markdown);
+      this.$('article').html($markdown);
     },
 
     renderChecklist: function($markdown){

@@ -10,6 +10,26 @@ define(function(require, exports, module){
     initialize: function(){
       this.render();
       $(window).keydown(this.keydown.bind(this));
+
+      this.updateBackgroundColor();
+      this.updateTextColor();
+
+      this.listenTo(this.model, 'change:bg_color', this.updateBackgroundColor);
+      this.listenTo(this.model, 'change:text_color', this.updateTextColor);
+    },
+
+    updateBackgroundColor: function(){
+      var classList = this.$el.attr('class');
+      this.$el
+        .removeClass()
+        .addClass( classList.replace(/\S+-bg/, this.model.get('bg_color')) );
+    },
+
+    updateTextColor: function(){
+      var classList = this.$el.attr('class');
+      this.$el
+        .removeClass()
+        .addClass( classList.replace(/\S+-text/, this.model.get('text_color')) );
     },
 
     render: function(){
@@ -20,10 +40,8 @@ define(function(require, exports, module){
       // console.log(e.which);
 
       if( e.which === 27 ){ // esc
-        if( this.$el.hasClass('preview-active') ){
-          this.hideActiveView();
-          return false;
-        }
+        this.hideActiveView();
+        return false;
       }
 
       if( e.metaKey === false ){
@@ -41,11 +59,16 @@ define(function(require, exports, module){
       }
 
       if( e.which === 80 ){ // Command-p
-        if( !this.$el.hasClass('preview-active') ){
-          this.showView(this.preview);
-        } else {
+        if( this.$el.hasClass('preview-active') ){
           this.hideActiveView();
+        } else {
+          this.showView(this.preview);
         }
+        return false;
+      }
+
+      if( e.which === 188 ){ // Command-,
+        this.toggleSettings();
         return false;
       }
 
@@ -73,6 +96,13 @@ define(function(require, exports, module){
       'click [data-action="destroy"]': 'handleDestroy',
       'click [data-action="preview"]': 'showPreview',
       'click [data-action="edit"]': 'hidePreview',
+      'click [data-action="settings"]': 'toggleSettings',
+      'click [data-action="export"]': 'handleExport'
+    },
+
+    handleExport: function(e){
+      e.preventDefault();
+      this.export();
     },
 
     handleDestroy: function(e){
@@ -114,6 +144,14 @@ define(function(require, exports, module){
     hidePreview: function(e){
       e.preventDefault();
       this.hideActiveView();
+    },
+
+    toggleSettings: function(){
+      if( this.$el.hasClass('settings-active') ){
+        this.hideActiveView();
+      } else {
+        this.showView(this.settings);
+      }
     }
   });
 

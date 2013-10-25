@@ -1,0 +1,77 @@
+/* Constant Colors
+################################################*/
+
+@link-blue: #1B94B7;
+
+@dark:rgba(0,0,0,.8);
+@dark-hover:rgba(0,0,0,1);
+@light: rgba(255,255,255,.8);
+@light-hover:rgba(255,255,255,1);
+
+/* Themes
+################################################*/
+.dark-text {
+  color:@dark;
+  .content {
+    color: @dark;
+  }
+}
+
+
+.light-text {
+  color: @light;
+  .content {
+    color: @light;
+  }
+}
+
+.light-bg {
+  background:#e5e5e5;
+}
+
+.light-bg.light-text {
+  background: #aaa;
+}
+
+.dark-bg {
+  background: #222426;
+}
+
+.dark-bg.dark-text {
+  background:#444;
+}
+
+.dark-bg.light-text {
+  .content,
+  .preview,
+  .settings {
+    .transition(color 200ms);
+  }
+  .content:hover,
+  .preview:hover,
+  .settings:hover {
+    color:rgba(255,255,255,1);
+  }
+}
+
+.blue-bg {
+  background:#84c0d7;
+}
+.red-bg {
+  background:#903d3d;
+}
+.orange-bg {
+  background:#d2ab59;
+}
+.green-bg {
+  background:#6fb269;
+}
+.purple-bg {
+  background:#6c5287;
+}
+.aqua-bg {
+  background:#3193a5;
+}
+.mint-bg {
+  background: #5cbf94;
+}

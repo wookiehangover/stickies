@@ -1,6 +1,7 @@
 @import "components/vendor/topcoat-list-mobile-dark.less";
 @import "components/vendor/bootstrap-mixins.less";
 @import "components/vendor/bootstrap-variables.less";
+@import "components/vendor/markdownpad-github.less";
 @import "components/animations.less";
 
 ::selection {
@@ -8,26 +9,34 @@
   text-shadow: none;
 }
 
-.fitBody(){
+.fitBody(@top: 18px; @right: 0; @bottom: 0; @left: 0;){
   position: absolute;
-  top: 18px;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  top: @top;
+  right: @right;
+  bottom: @bottom;
+  left: @left;
 }
 
 body {
-  background: lightgrey;
+  background: transparent;
+}
+
+.sticky {
+  .light-bg;
+  .fitBody(0);
 }
 
 i.icomatic {
   font-style: normal;
 }
 
+@import "components/themes.less";
 @import "components/header.less";
 @import "components/nav.less";
 @import "components/loader.less";
 
 @import "pages/preview.less";
+@import "pages/settings.less";
 @import "pages/editor.less";
+
 

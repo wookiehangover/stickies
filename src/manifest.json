@@ -15,6 +15,8 @@
   },
   "permissions": [
     "storage",
-    "webview"
+    "webview",
+    "identity",
+    "https://github.com/"
   ]
 }

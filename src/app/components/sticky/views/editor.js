@@ -1,7 +1,6 @@
 define(function(require, exports, module){
 
   'use strict';
-  var $ = require('jquery');
   var _ = require('lodash');
   var Backbone = require('backbone');
   var dependencyNeedle = require('mixins/dependencyNeedle');
@@ -18,7 +17,8 @@ define(function(require, exports, module){
     },
 
     render: function(){
-      this.$el.text( this.model.get('content') );
+      this.$el.html('').val( this.model.get('content') );
+      this.$el.focus();
     },
 
     events: {

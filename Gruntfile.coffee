@@ -61,7 +61,7 @@ config =
     options:
       jshintrc: ".jshintrc"
 
-    all: ["Gruntfile.js", "<%= yeoman.src %>/scripts/{,*/}*.js", "test/spec/{,*/}*.js"]
+    all: ["src/app/**/*.js"]
 
   mocha:
     all:
@@ -119,7 +119,6 @@ config =
         dest: "<%= yeoman.dist %>"
         src: [
           "*.{ico,png,txt}"
-          "styles/**/*"
           "images/**/*"
           "_locales/{,*/}*.json"
           "manifest.json"
@@ -131,6 +130,18 @@ config =
         cwd: ".tmp/images"
         dest: "<%= yeoman.dist %>/images"
         src: ["generated/*"]
+      ,
+        expand: true
+        flatten: true
+        filter: "isFile"
+        src: ["src/styles/font/*"]
+        dest: "dist/font"
+      ,
+        expand: true
+        flatten: true
+        filter: "isFile"
+        src: ["src/styles/icomatic/*"]
+        dest: "dist/styles"
       ]
 
   concurrent:

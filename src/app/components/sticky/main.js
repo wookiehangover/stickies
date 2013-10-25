@@ -6,16 +6,19 @@ define(function(require, exports, module){
   var _ = require('lodash');
 
   var StickyModel = require('./models/sticky');
+  var GithubAuth = require('components/github/main');
 
   var ViewModel = require('./views/main_view_model');
   var EditorView = require('./views/editor');
   var PreviewView = require('./views/preview');
+  var SettingsView = require('./views/settings');
 
   module.exports = ViewModel.extend({
-    el: $('body'),
+    el: $('.sticky'),
 
     initialize: function(){
       this.model = new StickyModel( window.stickyModel || {} );
+      this.github = new GithubAuth();
 
       this.createSubViews();
 
@@ -35,6 +38,11 @@ define(function(require, exports, module){
         el: this.$('.preview'),
         model: this.model
       });
+
+      this.settings = new SettingsView({
+        el: this.$('.settings'),
+        model: this.model
+      });
     },
 
     showView: function(view){
@@ -52,7 +60,22 @@ define(function(require, exports, module){
       if( this.activeView ){
         this.$el.removeClass(this.activeView.name + '-active');
         this.activeView.$el.fadeOut();
+        this.editor.render();
       }
+    },
+
+    export: function(){
+      var self = this;
+      this.showLoader('Saving Gist');
+
+      this.github.fetchToken().then(function(){
+        self.github.syncGist(self.model.toGIST())
+          .then(function(data){
+            console.log(data);
+            self.hideLoader(200);
+            window.open(data.html_url);
+          });
+      });
     },
 
     destroy: function(){
