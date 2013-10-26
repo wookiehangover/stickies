@@ -8,8 +8,10 @@ define(function(require, exports, module){
   // application https://github.com/settings/applications. 
   var clientId = config.id;
   var clientSecret = config.secret;
-  var redirectUri = 'https://' + chrome.runtime.id +
-                    '.chromiumapp.org/provider_cb';
+  var redirectUri;
+  if( chrome && chrome.runtime ){
+    redirectUri = 'https://' + chrome.runtime.id +'.chromiumapp.org/provider_cb';
+  }
   var redirectRe = new RegExp(redirectUri + '[#\?](.*)');
 
   var access_token = null;

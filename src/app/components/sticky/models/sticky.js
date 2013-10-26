@@ -85,7 +85,10 @@ define(function(require, exports, module){
 
   });
 
-  _.extend(StickyModel.prototype, googleStorageSync);
+  if( chrome ){
+    _.extend(StickyModel.prototype, googleStorageSync);
+  }
+
 
   module.exports = StickyModel;
 });

@@ -5,8 +5,8 @@ define(function(require, exports, module){
   var $ = require('jquery');
   var _ = require('lodash');
 
-  var StickyModel = require('./models/sticky');
   var GithubAuth = require('components/github/main');
+  var StickyModel = require('./models/sticky');
 
   var ViewModel = require('./views/main_view_model');
   var EditorView = require('./views/editor');
@@ -75,7 +75,7 @@ define(function(require, exports, module){
       var self = this;
       this.showLoader('Saving Gist');
 
-      this.github.fetchToken().then(function(){
+      this.github.auth().then(function(){
         self.github.syncGist(self.model.toGIST())
           .then(function(data){
             console.log(data);
@@ -95,6 +95,10 @@ define(function(require, exports, module){
 
     spawn: function(data, options){
       var model = new StickyModel(data || {});
+
+      if( !chrome ){
+        throw new Error('Chrome App only :(');
+      }
 
       options = _.defaults(options || {}, {
         id: model.id,
@@ -134,25 +138,7 @@ define(function(require, exports, module){
       this.save().then(function(){
         window.close();
       });
-    },
-
-    showLoader: function(message){
-      message = message || chrome.i18n.getMessage('savedMessage');
-      this.$loader.find('span').text(message);
-      this.$loader.fadeIn();
-    },
-
-    hideLoader: function(wait){
-      var self = this;
-      _.delay(function(){
-        self.$loader.fadeOut();
-      }, wait || 800);
-    },
-
-    dismissMenu: function(){
-      this.$nav.removeClass('effeckt-off-screen-nav-show');
     }
-
   });
 
 

@@ -19,8 +19,15 @@ define(function(require, exports, module){
       this.listenTo(this.model, 'change:text_color', this.updateTextColor);
     },
 
+    render: function(){
+      this.editor.render();
+    },
+
     updateBackgroundColor: function(){
       var classList = this.$el.attr('class');
+      if( !classList ){
+        return;
+      }
       this.$el
         .removeClass()
         .addClass( classList.replace(/\S+-bg/, this.model.get('bg_color')) );
@@ -28,13 +35,29 @@ define(function(require, exports, module){
 
     updateTextColor: function(){
       var classList = this.$el.attr('class');
+      if( !classList ){
+        return;
+      }
       this.$el
         .removeClass()
         .addClass( classList.replace(/\S+-text/, this.model.get('text_color')) );
     },
 
-    render: function(){
-      this.editor.render();
+    showLoader: function(message){
+      message = message || chrome.i18n.getMessage('savedMessage');
+      this.$loader.find('span').text(message);
+      this.$loader.fadeIn();
+    },
+
+    hideLoader: function(wait){
+      var self = this;
+      _.delay(function(){
+        self.$loader.fadeOut();
+      }, wait || 800);
+    },
+
+    dismissMenu: function(){
+      this.$nav.removeClass('effeckt-off-screen-nav-show');
     },
 
     events: {

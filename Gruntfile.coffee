@@ -8,7 +8,7 @@ config =
       spawn: false
 
     coffee:
-      files: ['test/spec/{,*/}*.coffee']
+      files: ['test/src/**/*.coffee']
       tasks: ['coffee:test']
 
     less:
@@ -46,7 +46,7 @@ config =
 
     test:
       options:
-        base: [".tmp", "test"]
+        base: ["src", "test"]
 
   clean:
     dist:
@@ -55,7 +55,6 @@ config =
         src: [".tmp", "<%= yeoman.dist %>/*", "!<%= yeoman.dist %>/.git*"]
       ]
 
-    server: ".tmp"
 
   jshint:
     options:
@@ -70,12 +69,14 @@ config =
         urls: ["http://localhost:<%= connect.options.port %>/index.html"]
 
   coffee:
+    options:
+      sourceMap: true
     test:
       files: [
         expand: true
-        cwd: "test/spec"
-        src: "{,*/}*.coffee"
-        dest: ".tmp/spec"
+        cwd: "test/src"
+        src: "**/*.coffee"
+        dest: "test/spec"
         ext: ".js"
       ]
 
@@ -145,10 +146,6 @@ config =
       ]
 
   concurrent:
-    test: [
-      'coffee'
-      'compass'
-    ],
     dist: [
       'htmlmin'
       'requirejs'
@@ -161,8 +158,7 @@ module.exports = (grunt) ->
   grunt.initConfig(config)
 
   grunt.registerTask "test", [
-    "clean:server"
-    "concurrent:test"
+    "coffee:test"
     "connect:test"
     "mocha"
   ]

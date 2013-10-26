@@ -1,10 +1,10 @@
-/*globals chrome: true */
 define(function(require, exports, module){
   'use strict';
 
   var _ = require('lodash');
   var $ = require('jquery');
   var Backbone = require('backbone');
+
   var auth = require('./auth');
   var googleStorageSync = require('mixins/google-storage-sync');
 
@@ -52,11 +52,11 @@ define(function(require, exports, module){
       return _.omit(resp, 'gist');
     },
 
-    fetchToken: function(force){
+    auth: function(){
       var dfd = $.Deferred();
       var token = this.get('token');
       var self = this;
-      if( !!force && token ){
+      if( token ){
         dfd.resolve(token);
       } else {
         auth.getToken(true, function(err, accessToken){
@@ -75,6 +75,7 @@ define(function(require, exports, module){
       auth.removeCachedToken(this.get('token'));
     },
 
+    // TODO move gist handling to it's own module
     syncGist: function(gistData, options){
       if( _.size(this.gist.attributes) === 0 ){
         return this.createGist(gistData, options);
@@ -125,7 +126,9 @@ define(function(require, exports, module){
     }
   });
 
-  _.extend(GithubAuth.prototype, googleStorageSync);
+  if( chrome ){
+    _.extend(GithubAuth.prototype, googleStorageSync);
+  }
 
   module.exports = GithubAuth;
 

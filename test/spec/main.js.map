@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "main.js",
+  "sourceRoot": "../src/",
+  "sources": [
+    "main.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA;CAAA,CAAA,IAAA,CAAO;CACL,CAAS,EAAT,CAAA,EAAA;CADF,GAAA;;CAAA,CAGA,CAA4B,IAA5B,EAA4B,OAApB;CACE,CAEL,CAAA,IAFH,EAEG,EAFH,uBAAQ;CAGA,EAAN,EAAK,QAAL;CAHF,IAEG;CAHL,EAA4B;CAH5B"
+}
