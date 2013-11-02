@@ -18,9 +18,8 @@
 }
 
 body {
-  background: transparent;
+  // background: transparent;
 }
-
 .sticky {
   .light-bg;
   .fitBody(0);
@@ -38,5 +37,29 @@ i.icomatic {
 @import "pages/preview.less";
 @import "pages/settings.less";
 @import "pages/editor.less";
+
+.webapp {
+  .sticky {
+    margin: auto;
+    @media (min-width: 988px) {
+      margin: 24px auto;
+    }
+    max-width: 940px;
+    .transition(margin 200ms);
+    .box-shadow(1px 3px 8px rgba(0,0,0,0.8));
+  }
+
+  @media (min-width: 1327px) {
+    .main-header .menu {
+      display: none;
+    }
+    .effeckt-off-screen-nav {
+      visibility: visible;
+      .translate(0%, 0%);
+      .box-shadow(-1px 3px 8px rgba(0,0,0,0.8));
+    }
+  }
+}
+
 
 

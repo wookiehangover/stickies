@@ -1,9 +1,8 @@
 define(function(require, exports, module){
 
   'use strict';
-  var Backbone = require('backbone');
   var _ = require('lodash');
-  var googleStorageSync = require('mixins/google-storage-sync');
+  var Backbone = require('backbone');
 
   var listItemRegex = /- \[.\]/;
 
@@ -84,11 +83,6 @@ define(function(require, exports, module){
     }
 
   });
-
-  if( chrome ){
-    _.extend(StickyModel.prototype, googleStorageSync);
-  }
-
 
   module.exports = StickyModel;
 });

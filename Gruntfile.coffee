@@ -24,13 +24,13 @@ config =
         'src/styles/main.css': 'src/styles/less/main.less'
 
   requirejs:
-    compile:
+    chrome:
       options:
-        mainConfigFile: 'src/app/require-config.js'
+        mainConfigFile: 'src/app/require_config.js'
         generateSourceMaps: true
-        include: ["main"],
-        insertRequire: ["main"],
-        out: 'dist/scripts/app.js'
+        include: ["main_chrome"],
+        insertRequire: ["main_chrome"],
+        out: 'dist/scripts/chrome_app.js'
         optimize: 'uglify2'
         findNestedDependencies: true,
         wrap: true
@@ -40,13 +40,15 @@ config =
   connect:
     options:
       port: 9000
-
-      # change this to '0.0.0.0' to access the server from outside
-      hostname: "localhost"
+      hostname: "0.0.0.0"
 
     test:
       options:
         base: ["src", "test"]
+
+    web:
+      options:
+        base: ["src"]
 
   clean:
     dist:
@@ -54,7 +56,11 @@ config =
         dot: true
         src: [".tmp", "<%= yeoman.dist %>/*", "!<%= yeoman.dist %>/.git*"]
       ]
-
+    test:
+      files: [
+        dot: true
+        src: ["test/spec"]
+      ]
 
   jshint:
     options:
@@ -102,8 +108,6 @@ config =
 
   htmlmin:
     dist:
-      options: {}
-
       files: [
         expand: true
         cwd: "<%= yeoman.src %>"
@@ -158,6 +162,7 @@ module.exports = (grunt) ->
   grunt.initConfig(config)
 
   grunt.registerTask "test", [
+    "clean:test"
     "coffee:test"
     "connect:test"
     "mocha"

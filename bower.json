@@ -11,7 +11,8 @@
     "mocha": "~1.13.0",
     "chai": "~1.8.1",
     "sinon": "~1.7.3",
-    "squire": "*"
+    "squire": "*",
+    "backbone.localStorage": "~1.1.7"
   },
   "devDependencies": {}
 }

@@ -3,7 +3,7 @@ define(function(require, exports, module){
   'use strict';
   var _ = require('lodash');
   var Backbone = require('backbone');
-  var dependencyNeedle = require('mixins/dependencyNeedle');
+  var dependencyNeedle = require('mixins/dependency_needle');
 
   var EditorView = Backbone.View.extend({
 

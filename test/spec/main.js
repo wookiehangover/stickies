@@ -3,8 +3,8 @@
     baseUrl: 'app'
   });
 
-  require(['require-config'], function() {
-    return require(['spec/components/sticky/main-spec'], function() {
+  require(['require_config'], function() {
+    return require(['spec/components/sticky/main_spec'], function() {
       return mocha.run();
     });
   });

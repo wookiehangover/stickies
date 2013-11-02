@@ -7,6 +7,7 @@ require.config({
     lodash: '../bower_components/lodash/dist/lodash',
     marked: '../bower_components/marked/lib/marked',
     tpl: '../bower_components/lodash-template-loader/loader',
+    localstorage: '../bower_components/backbone.localStorage/backbone.localStorage',
 
     // Test
     spec: '../spec',

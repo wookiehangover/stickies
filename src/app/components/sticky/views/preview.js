@@ -5,21 +5,12 @@ define(function(require, exports, module){
   var _ = require('lodash');
   var Backbone = require('backbone');
   var marked = require('marked');
-  var dependencyNeedle = require('mixins/dependencyNeedle');
+  var dependencyNeedle = require('mixins/dependency_needle');
 
-  // blah, this is for dev mode and is silly
+  // blah, this is for dev mode and is silly, lodash templates are problematic
+  // in chrome apps. Use a PWT template instead.
   // var checkboxTemplate = require('tpl!../templates/checkbox');
-  var checkboxTemplate = function(context){
-    return [
-      '<label class="topcoat-checkbox',
-      (context.checked ? ' checked">': '">'),
-      '<input type="checkbox" name="'+ context.name +'"',
-      (context.checked ? 'checked="checked" />': '/>'),
-      '<div class="topcoat-checkbox__checkmark"></div>',
-      context.content,
-      '</label>'
-    ].join('');
-  };
+  var checkboxTemplate = require('../templates/checkbox');
 
   var checkListRegex = /\[(.)\]\s(.+)/;
 

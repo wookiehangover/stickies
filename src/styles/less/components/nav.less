@@ -39,12 +39,28 @@
   }
 
   .topcoat-list a {
+    float: left;
     width: 100%;
     height: 100%;
-    .transition(color 200ms);
+    .transition(color 400ms);
+
+    i {
+      position: relative;
+      top: 2px;
+    }
+
+    .github {
+      font-size: 25px;
+      top: -1px;
+      right: -6px;
+    }
 
     &:hover {
       color: #e2e2e2;
+    }
+
+    &[data-action="destroy"]:hover {
+      color: red;
     }
   }
 

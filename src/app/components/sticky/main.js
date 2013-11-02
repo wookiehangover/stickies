@@ -17,13 +17,12 @@ define(function(require, exports, module){
     el: $('.sticky'),
 
     initialize: function(){
-      this.model = new StickyModel( window.stickyModel || {} );
+      if( !this.model ){
+        this.model = new StickyModel( window.stickyModel || {} );
+      }
       this.github = new GithubAuth();
 
       this.createSubViews();
-
-      this.$nav = this.$('.effeckt-off-screen-nav');
-      this.$loader = this.$('#loader');
 
       ViewModel.prototype.initialize.apply(this, arguments);
     },

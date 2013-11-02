@@ -1,3 +1,4 @@
+/*globals chrome: true*/
 define(function(require, exports, module){
 
   'use strict';
@@ -6,9 +7,15 @@ define(function(require, exports, module){
   var keytar = require('./keytar');
   var Backbone = require('backbone');
 
+  var savedMessage = (window.chrome && chrome.i18n) ?
+    chrome.i18n.getMessage('saved') : 'Saved';
+
   var MainViewModel = Backbone.View.extend({
 
     initialize: function(){
+      this.$nav = this.$('.effeckt-off-screen-nav');
+      this.$loader = this.$('#loader');
+
       this.render();
       $(window).keydown(this.handleKeydown.bind(this));
 
@@ -44,7 +51,7 @@ define(function(require, exports, module){
     },
 
     showLoader: function(message){
-      message = message || chrome.i18n.getMessage('savedMessage');
+      message = message || savedMessage;
       this.$loader.find('span').text(message);
       this.$loader.fadeIn();
     },
@@ -96,6 +103,7 @@ define(function(require, exports, module){
     handleSave: function(e){
       e.preventDefault();
       this.save();
+      this.hideActiveView();
     },
 
     close: function(e){

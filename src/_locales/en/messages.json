@@ -39,7 +39,7 @@ You can also embed simple checklists in Stickies, much like in Github issues.
 - [ ] In Preview mode, this is an unfinished TODO
 - [x] And this is a completed one"
     },
-    "savedMessage": {
+    "saved": {
       "message": "Saved"
     }
 }

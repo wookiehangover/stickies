@@ -4,7 +4,7 @@ define(function(require, exports, module){
   var _ = require('lodash');
   var $ = require('jquery');
   var Backbone = require('backbone');
-  var dependencyNeedle = require('mixins/dependencyNeedle');
+  var dependencyNeedle = require('mixins/dependency_needle');
 
   var SettingsView = Backbone.View.extend({
 

@@ -3,13 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>stickies</title>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/topcoat/topcoat-desktop-dark.css">
     <link rel="stylesheet" href="styles/icomatic/icomatic.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body>
+  <body class="webapp">
     <div class="sticky light-bg dark-text">
       <nav class="main-header">
         <a href="#" class="close"><i></i></a>
@@ -104,8 +105,9 @@
       <div id="loader"><span>Saved</span></div>
     </div>
 
-    <!-- <script src="scripts/chrome_app.js"></script> -->
-    <script data-main="app/main_chrome" src="bower_components/requirejs/require.js"></script>
+    <!-- <script src="scripts/web_app.js"></script> -->
+    <script data-main="app/main_web" src="bower_components/requirejs/require.js"></script>
 
   </body>
 </html>
+

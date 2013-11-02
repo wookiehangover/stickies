@@ -3,12 +3,11 @@ define(function(require, exports, module){
 
   var _ = require('lodash');
   var $ = require('jquery');
+  var config = require('config');
   var Backbone = require('backbone');
 
-  var auth = require('./auth');
-  var googleStorageSync = require('mixins/google-storage-sync');
-
-  var API_ROOT = 'https://api.github.com';
+  var auth = require('components/github/auth');
+  var API_ROOT = config.github.API_ROOT;
 
   var GithubAuth = Backbone.Model.extend({
 
@@ -35,7 +34,7 @@ define(function(require, exports, module){
         this.save( this.toJSON() );
       }, this);
 
-      this.loaded = this.fetch();
+      // this.loaded = this.fetch();
     },
 
     toJSON: function(){
@@ -125,10 +124,6 @@ define(function(require, exports, module){
       return $.ajax(_.extend(params, options));
     }
   });
-
-  if( chrome ){
-    _.extend(GithubAuth.prototype, googleStorageSync);
-  }
 
   module.exports = GithubAuth;
 
