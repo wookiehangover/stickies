@@ -21,9 +21,7 @@ define(function(require, exports, module){
         this.model = new StickyModel( window.stickyModel || {} );
       }
       this.github = new GithubAuth();
-
       this.createSubViews();
-
       ViewModel.prototype.initialize.apply(this, arguments);
     },
 
@@ -45,14 +43,14 @@ define(function(require, exports, module){
     },
 
     showView: function(view){
-      this.save({ loader: false }).done(function(){
+      this.save({ loader: false }).done(_.bind(function(){
         this.hideActiveView();
         this.dismissMenu();
         this.activeView = view;
         this.$el.addClass(view.name + '-active');
         view.render();
         view.$el.fadeIn();
-      }.bind(this));
+      }, this));
     },
 
     hideActiveView: function(){
@@ -74,14 +72,17 @@ define(function(require, exports, module){
       var self = this;
       this.showLoader('Saving Gist');
 
-      this.github.auth().then(function(){
-        self.github.syncGist(self.model.toGIST())
-          .then(function(data){
-            console.log(data);
-            self.hideLoader(200);
-            window.open(data.html_url);
-          });
-      });
+      this.github.auth()
+        .then(function(){
+          self.github.syncGist(self.model.toGIST())
+            .then(function(data){
+              console.log(data);
+              self.hideLoader(200);
+              window.open(data.html_url);
+            });
+        }, function(){
+          this.hideLoader();
+        });
     },
 
     destroy: function(){
@@ -127,10 +128,15 @@ define(function(require, exports, module){
         content: this.editor.getContent()
       };
 
-      return this.model.save(data, options).then(function(){
+      var onComplete = _.bind(function(){
         this.dismissMenu();
         this.hideLoader();
-      }.bind(this));
+      }, this);
+
+      var xhr = this.model.save(data, options)
+        .always(onComplete);
+
+      return xhr;
     },
 
     close: function(){

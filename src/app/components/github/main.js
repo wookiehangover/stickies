@@ -21,6 +21,8 @@ define(function(require, exports, module){
         this.set('id', 'github');
       }
 
+      this.disabled = auth.disabled;
+
       this.on('change:token', function(model){
         $.ajaxSetup({
           beforeSend: function(req) {
@@ -34,7 +36,9 @@ define(function(require, exports, module){
         this.save( this.toJSON() );
       }, this);
 
-      // this.loaded = this.fetch();
+      if( !this.disabled ){
+        this.loaded = this.fetch();
+      }
     },
 
     toJSON: function(){

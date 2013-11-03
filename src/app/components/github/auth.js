@@ -7,4 +7,6 @@ define(function(require, exports, module){
   exports.removeCachedToken = function(){
     throw new Error('Not yet implemented');
   };
+
+  exports.disabled = true;
 });

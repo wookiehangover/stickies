@@ -22,6 +22,10 @@ define(function(require, exports, module){
       this.updateBackgroundColor();
       this.updateTextColor();
 
+      if( this.github.disabled ){
+        this.$('.export-to-github').remove();
+      }
+
       this.listenTo(this.model, 'change:bg_color', this.updateBackgroundColor);
       this.listenTo(this.model, 'change:text_color', this.updateTextColor);
     },
