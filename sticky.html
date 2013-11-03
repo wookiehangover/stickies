@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>stickies</title>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body>
+    <div class="sticky light-bg dark-text">
+      <nav class="main-header">
+        <a href="#" class="close"><i></i></a>
+        <a href="#" class="menu" data-action="toggle-menu"><i class="icomatic">listview</i></a>
+      </nav>
+
+      <nav class="effeckt-off-screen-nav topcoat-list__container effeckt-off-screen-nav-right-overlay">
+        <h4 class="topcoat-list__header">
+          <a href="#" class="effeckt-off-screen-nav-close" data-action="toggle-menu"><i class="icomatic">listview</i></a>
+        </h4>
+
+        <ul class="topcoat-list">
+          <li class="topcoat-list__item">
+            <a href="#" data-action="new">New <i class="icomatic">plus</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#" data-action="save">Save <i class="icomatic">save</i></a>
+          </li>
+          <li class="topcoat-list__item hide-preview">
+            <a href="#" data-action="edit">Edit <i class="icomatic">pencil</i></a>
+          </li>
+          <li class="topcoat-list__item show-preview">
+            <a href="#" data-action="preview">Preview <i class="icomatic">preview</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#" data-action="export">Export to Gist <i class="icomatic github">github</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#" data-action="email">Send as Email <i class="icomatic">email</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#" data-action="destroy">Delete <i class="icomatic">cancel</i></a>
+          </li>
+          <li class="topcoat-list__item">
+            <a href="#" data-action="settings">Settings <i class="icomatic">settings</i></a>
+          </li>
+        </ul>
+      </nav>
+
+      <textarea id="editor" class="content"></textarea>
+
+      <div class="preview">
+        <article></article>
+      </div>
+
+      <div class="settings">
+        <h2>Settings</h2>
+
+        <form>
+          <div class="form-row">
+            <div class="background-color">
+              <label>Background Color</label>
+              <ul>
+                <li class="dark-bg active"><i class="icomatic">checkmark</i></li>
+                <li class="light-bg"><i class="icomatic">checkmark</i></li>
+                <li class="mint-bg"><i class="icomatic">checkmark</i></li>
+                <li class="blue-bg"><i class="icomatic">checkmark</i></li>
+                <li class="red-bg"><i class="icomatic">checkmark</i></li>
+                <li class="orange-bg"><i class="icomatic">checkmark</i></li>
+                <li class="green-bg"><i class="icomatic">checkmark</i></li>
+                <li class="purple-bg"><i class="icomatic">checkmark</i></li>
+                <li class="aqua-bg"><i class="icomatic">checkmark</i></li>
+              </ul>
+              <input type="hidden" name="color" value="">
+              <div class="color-preview light-bg dark-text">
+                <i class="icomatic">pencil</i>
+              </div>
+            </div>
+            <div class="text-color">
+              <label>Text Color</label>
+              <div class="control-group">
+                <label class="topcoat-radio-button">
+                  <input type="radio" value="dark-text" name="text-color" checked="checked">
+                  <div class="topcoat-radio-button__checkmark"></div>
+                  Dark
+                </label>
+                <br>
+                <label class="topcoat-radio-button">
+                  <input type="radio" value="light-text" name="text-color">
+                  <div class="topcoat-radio-button__checkmark"></div>
+                  light
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <button class="topcoat-button--large" data-action="save">Save</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="loader"><span>Saved</span></div>
+    </div>
+
+    <!-- <script src="scripts/stickies_chrome.js"></script> -->
+    <script data-main="app/main_chrome" src="bower_components/requirejs/require.js"></script>
+
+  </body>
+</html>

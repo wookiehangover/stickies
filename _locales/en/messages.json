@@ -1,0 +1,45 @@
+{
+    "appName": {
+        "message": "Stickies2",
+        "description": "Simple notes written in Github Flavored Markdown"
+    },
+    "appDescription": {
+        "message": "Sticky notes",
+        "description": "Simple notes written in Github Flavored Markdown"
+    },
+    "welcomeMessage": {
+        "message": "#Welcome to Stickies2
+
+Stickies are simple notes written in Github Flavored Markdown.
+
+Inspired by the old-school Stickies application from Mac OS, Stickies2 gives a dead simple way to take a quick note, with room for a few bells and whistles, too.
+
+## Keyboard Shortcuts
+
+Here are a few keyboard shortcuts to make things a bit easier:
+
+* Press `Command-s` to sync with your Google Chrome Store account.
+* Press `Command-p` for a markdown preview.
+* Use `escape` to dismiss the preview
+* Make a new sticky with `Command-n`.
+* To **fork** the current sticky, use `Command-Shift-N`.
+* Delte a sticky with `Command-Shift-d`.
+* Edit a sticky's settings `Command-,`.
+
+## Export as Gist
+
+In addition to persisting with your Google account, Stickies can be exported to a Github Gist, where you get a detailed history of revisions and a simple way to share your notes with others.
+
+To save the current Sticky to a Gist, select the `Export to Gist` item from the menu.
+
+## TODO Lists
+
+You can also embed simple checklists in Stickies, much like in Github issues.
+
+- [ ] In Preview mode, this is an unfinished TODO
+- [x] And this is a completed one"
+    },
+    "saved": {
+      "message": "Saved"
+    }
+}
