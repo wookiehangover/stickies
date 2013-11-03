@@ -24,18 +24,31 @@ config =
         'src/styles/main.css': 'src/styles/less/main.less'
 
   requirejs:
+    options:
+      generateSourceMaps: true
+      findNestedDependencies: true
+      preserveLicenseComments: false
+      wrap: true
+      almond: true
+      optimize: 'uglify2'
+      mainConfigFile: 'src/app/require_config.js'
     chrome:
       options:
-        mainConfigFile: 'src/app/require_config.js'
-        generateSourceMaps: true
+        out: 'dist/scripts/stickies_chrome.js'
         include: ["main_chrome"],
         insertRequire: ["main_chrome"],
-        out: 'dist/scripts/chrome_app.js'
-        optimize: 'uglify2'
-        findNestedDependencies: true,
-        wrap: true
-        preserveLicenseComments: false
-        almond: true
+        # Stupidly, the build specific maps config needs to be included here too
+        map:
+          'components/github/main':
+            'components/github/auth': 'components/github/chrome_identity'
+    web:
+      options:
+        out: 'dist/scripts/stickies_web.js'
+        include: ["main_web"],
+        insertRequire: ["main_web"],
+        map:
+          'localstorage':
+            'underscore': 'lodash'
 
   connect:
     options:
@@ -150,9 +163,13 @@ config =
       ]
 
   concurrent:
-    dist: [
+    chrome: [
       'htmlmin'
-      'requirejs'
+      'requirejs:chrome'
+    ]
+    web: [
+      'htmlmin'
+      'requirejs:web'
     ]
 
 module.exports = (grunt) ->
@@ -168,12 +185,20 @@ module.exports = (grunt) ->
     "mocha"
   ]
 
-  grunt.registerTask "build", [
+  grunt.registerTask "build:chrome", [
     "clean:dist"
     "useminPrepare"
-    "concurrent:dist"
+    "concurrent:chrome"
     "concat"
-    # "cssmin"
+    "copy"
+    "usemin"
+  ]
+
+  grunt.registerTask "build:web", [
+    "clean:dist"
+    "useminPrepare"
+    "concurrent:web"
+    "concat"
     "copy"
     "usemin"
   ]
@@ -181,5 +206,4 @@ module.exports = (grunt) ->
   grunt.registerTask "default", [
     "jshint"
     "test"
-    "build"
   ]

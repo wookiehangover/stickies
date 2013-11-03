@@ -6,7 +6,6 @@ require.config({
   }
 });
 
-
 require(['require_config'], function(){
 
   'use strict';

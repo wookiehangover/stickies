@@ -17,9 +17,8 @@ require(['require_config'], function(){
   require([
     'backbone',
     'mixins/google_storage_sync',
-    './main'
+    'main'
   ], function(Backbone, googleStorage, init) {
-
     // All modules will persist to chrome.storage[local|sync]
     Backbone.originalSync = Backbone.sync;
     Backbone.sync = googleStorage.sync;
