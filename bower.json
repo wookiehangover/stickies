@@ -12,7 +12,8 @@
     "chai": "~1.8.1",
     "sinon": "~1.7.3",
     "squire": "*",
-    "backbone.localStorage": "~1.1.7"
+    "backbone.localStorage": "~1.1.7",
+    "backbone-pouch.js": "https://rawgithub.com/wookiehangover/backbone-pouch/master/lib/backbone-pouch.js"
   },
   "devDependencies": {}
 }

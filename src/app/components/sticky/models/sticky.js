@@ -13,9 +13,9 @@ define(function(require, exports, module){
     DEBOUNCE: 1e3,
 
     initialize: function(){
-      if( !this.id ){
-        this.set('id', 'sticky_'+Date.now(), { silent: true });
-      }
+      // if( !this.id ){
+      //   this.set('id', 'sticky_'+Date.now(), { silent: true });
+      // }
       this.throttledSave = _.throttle(this.save.bind(this), this.THROTTLE);
       this.debouncedSave = _.debounce(this.throttledSave.bind(this), this.DEBOUNCE);
     },
@@ -25,7 +25,7 @@ define(function(require, exports, module){
       text_color: 'dark-text'
     },
 
-    set: function(key, val){
+    set: function(key, val, options){
       var attrs;
       if (key == null) return this;
 
@@ -37,7 +37,7 @@ define(function(require, exports, module){
       }
 
       attrs.updated_at = Date.now();
-      return Backbone.Model.prototype.set.apply(this, arguments);
+      return Backbone.Model.prototype.set.call(this, attrs, options);
     },
 
     getTitle: function(){
@@ -80,6 +80,17 @@ define(function(require, exports, module){
           }
         }
       };
+    },
+
+    toEmail: function(){
+      var content = [
+        'mailto:?subject=',
+        encodeURIComponent('Sticky Note: '+ this.getTitle()),
+        '&body=',
+        encodeURIComponent(this.get('content'))
+      ];
+
+      return content.join('');
     }
 
   });

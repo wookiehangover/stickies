@@ -8,6 +8,8 @@ require.config({
     marked: '../bower_components/marked/lib/marked',
     tpl: '../bower_components/lodash-template-loader/loader',
     localstorage: '../bower_components/backbone.localStorage/backbone.localStorage',
+    'backbone-pouch': '../bower_components/backbone-pouch.js/index',
+    pouchdb: '../scripts/pouchdb-nightly',
 
     // Test
     spec: '../spec',
@@ -19,6 +21,9 @@ require.config({
     backbone: {
       deps: ['jquery', 'lodash'],
       exports: 'Backbone'
+    },
+    pouchdb: {
+      exports: 'PouchDB'
     }
   }
 });

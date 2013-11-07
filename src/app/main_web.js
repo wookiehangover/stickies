@@ -1,36 +1,48 @@
 require.config({
   map: {
-    'localstorage': {
+    'backbone-pouch': {
       'underscore': 'lodash'
     }
   }
 });
 
 require(['require_config'], function(){
-
   'use strict';
   require([
+    'lodash',
     'backbone',
-    'localstorage',
+    'mixins/pouchdb_sync',
     'components/sticky/models/sticky',
     './main'
-  ], function(Backbone, LocalStorage, StickyModel, init) {
+  ], function(_, Backbone, pouchSync, StickyModel, init) {
+
+    Backbone.originalSync = Backbone.sync;
+    Backbone.sync = pouchSync.sync;
 
     var Stickies = Backbone.Collection.extend({
-      localStorage: new LocalStorage('sticky'),
-      model: StickyModel
+      model: StickyModel,
+      idAttribute: '_id',
+      parse: function(resp){
+        return _.pluck(resp.rows, 'doc');
+      }
     });
 
-    var stickies = new Stickies();
+    var stickies = window.stickies = new Stickies();
 
     stickies.fetch().done(function(){
       var options = {};
       if( stickies.length ){
         options.model = stickies.last();
       } else {
-        options.model = stickies.create();
+        var model = options.model = new stickies.model({
+          content: '#Hello World!'
+        });
+        options.model = stickies.add(model);
+        model.save();
       }
+
       init(options);
+      window.sticky.db = pouchSync.db;
     });
 
   });

@@ -30,9 +30,13 @@ define(function(require, exports, module){
         model.set( model.parse(resp[data]) );
       }
       console.log(target +' sync successful');
+      model.trigger('sync', model, resp, options);
       dfd.resolve(model.toJSON());
     });
 
-    return dfd.promise();
+    var xhr = dfd.promise();
+
+    model.trigger('request', model, xhr, options);
+    return xhr;
   };
 })

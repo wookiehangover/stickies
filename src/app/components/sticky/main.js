@@ -6,6 +6,7 @@ define(function(require, exports, module){
   var _ = require('lodash');
 
   var GithubAuth = require('components/github/main');
+  var UserModel = require('components/user/main');
   var StickyModel = require('./models/sticky');
 
   var ViewModel = require('./views/main_view_model');
@@ -16,13 +17,28 @@ define(function(require, exports, module){
   module.exports = ViewModel.extend({
     el: $('.sticky'),
 
-    initialize: function(){
+    initialize: function(options){
+      this.attachDependencies(options);
+      this.createSubViews();
+      ViewModel.prototype.initialize.apply(this, arguments);
+    },
+
+    attachDependencies: function(){
       if( !this.model ){
         this.model = new StickyModel( window.stickyModel || {} );
       }
       this.github = new GithubAuth();
-      this.createSubViews();
-      ViewModel.prototype.initialize.apply(this, arguments);
+      this.user = new UserModel();
+
+      this.listenTo(this.user, 'replicate', function(){
+        if( this.db && this.user.db ){
+          this.db.replicate.from(this.user.db, {
+            complete: function(){
+              console.log('upstream replication complete');
+            }
+          });
+        }
+      }, this);
     },
 
     createSubViews: function(){
@@ -62,10 +78,7 @@ define(function(require, exports, module){
     },
 
     email: function(){
-      window.open('mailto:?subject=' +
-                  'Sticky Note: '+ this.model.getTitle() +
-                  '&body=' +
-                  encodeURIComponent(this.model.get('content')) );
+      window.open( this.model.toEmail() );
     },
 
     export: function(){
@@ -88,9 +101,10 @@ define(function(require, exports, module){
     destroy: function(){
       // TODO
       // trigger a modal to confirm
-      this.model.destroy({ target: 'sync' }).done(function(){
-        window.close();
-      });
+      this.model.destroy({ target: 'sync' })
+      // .done(function(){
+      //   window.close();
+      // });
     },
 
     spawn: function(data, options){
@@ -114,9 +128,15 @@ define(function(require, exports, module){
       });
     },
 
+    getStore: function(){
+      var db = this.user.db;
+      return db ? db : false;
+    },
+
     save: function(options){
       options = _.defaults(options || {}, {
         target: 'sync',
+        targetDB: this.getStore(),
         loader: true
       });
 

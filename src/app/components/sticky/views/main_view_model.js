@@ -85,8 +85,12 @@ define(function(require, exports, module){
     },
 
     handleEmail: function(e){
-      e.preventDefault();
-      this.email();
+      if( window.chrome && window.chrome.storage ){
+        e.preventDefault();
+        this.email();
+      } else {
+        $(e.currentTarget).attr('href', this.model.toEmail());
+      }
     },
 
     handleExport: function(e){
