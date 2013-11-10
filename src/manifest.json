@@ -18,6 +18,7 @@
     "webview",
     "identity",
     "https://github.com/",
-    "http://127.0.0.1:5984/"
+    "http://localhost:3000/",
+    "http://calm-eyrie-2594.herokuapp.com/"
   ]
 }

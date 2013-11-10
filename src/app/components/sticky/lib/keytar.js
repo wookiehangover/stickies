@@ -10,17 +10,17 @@ define(function(require, exports, module){
     },
 
     // Command-w
-    '87|metaKey': function(ctx){
+    '87+metaKey': function(ctx){
       ctx.close();
     },
 
     // Command-Shift-d
-    '68|metaKey|shiftKey': function(ctx){
+    '68+metaKey+shiftKey': function(ctx){
       ctx.destroy();
     },
 
     // Command-p
-    '80|metaKey': function(ctx){
+    '80+metaKey': function(ctx){
       if( ctx.$el.hasClass('preview-active') ){
         ctx.hideActiveView();
       } else {
@@ -29,12 +29,12 @@ define(function(require, exports, module){
     },
 
     // Command-,
-    '188|metaKey': function(ctx){
+    '188+metaKey': function(ctx){
       ctx.toggleSettings();
     },
 
     // Command-n
-    '78|metaKey': function(ctx, e){
+    '78+metaKey': function(ctx, e){
       var data = {};
       if( e.shiftKey ){
         data = _.omit(ctx.model.toJSON(), 'id');
@@ -43,7 +43,7 @@ define(function(require, exports, module){
     },
 
     // Command-s
-    '83|metaKey': function(ctx, e){
+    '83+metaKey': function(ctx, e){
       if( e.shiftKey ){
         ctx.export();
       } else {
@@ -56,7 +56,7 @@ define(function(require, exports, module){
     var map = {};
 
     _.each(keyMap, function(fn, combo){
-      var parts = combo.split('|');
+      var parts = combo.split('+');
       var char = parts.shift();
       map[char] = function(ctx, e){
         if( parts.length === 0 ){

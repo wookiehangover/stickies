@@ -4,7 +4,7 @@ define(function(require, exports, module){
   'use strict';
   var $ = require('jquery');
   var _ = require('lodash');
-  var keytar = require('./keytar');
+  var keytar = require('../lib/keytar');
   var Backbone = require('backbone');
 
   var savedMessage = (window.chrome && chrome.i18n) ?
@@ -16,7 +16,6 @@ define(function(require, exports, module){
       this.$nav = this.$('.effeckt-off-screen-nav');
       this.$loader = this.$('#loader');
 
-      this.render();
       $(window).keydown(this.handleKeydown.bind(this));
 
       this.updateBackgroundColor();
@@ -86,37 +85,38 @@ define(function(require, exports, module){
 
     handleEmail: function(e){
       if( window.chrome && window.chrome.storage ){
-        e.preventDefault();
         this.email();
+        return false;
       } else {
         $(e.currentTarget).attr('href', this.model.toEmail());
       }
     },
 
     handleExport: function(e){
-      e.preventDefault();
       this.export();
+      return false;
     },
 
     handleDestroy: function(e){
-      e.preventDefault();
       this.destroy();
+      return false;
     },
 
     handleSpawn: function(e){
-      e.preventDefault();
       this.spawn();
+      return false;
     },
 
     handleSave: function(e){
-      e.preventDefault();
       this.save();
       this.hideActiveView();
+      return false;
     },
 
     close: function(e){
       if( e ){
         e.preventDefault();
+        e.stopPropagation();
       }
       this.model.save({
         content: this.editor.getContent()
@@ -131,13 +131,13 @@ define(function(require, exports, module){
     },
 
     showPreview: function(e){
-      e.preventDefault();
       this.showView(this.preview);
+      return false;
     },
 
     hidePreview: function(e){
-      e.preventDefault();
       this.hideActiveView();
+      return false;
     },
 
     toggleSettings: function(){
@@ -146,6 +146,7 @@ define(function(require, exports, module){
       } else {
         this.showView(this.settings);
       }
+      return false;
     }
   });
 

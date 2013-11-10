@@ -8,17 +8,17 @@ define(function(require, exports, module){
     var dfd = $.Deferred();
     var target = options.target || 'local';
     var action = 'get';
-    var data = model.id;
+    var data = model.get('id') || model.get('_id');
 
     if( method === 'update' || method === 'create' || method === 'patch' ){
       action = 'set';
       data = {};
-      data[model.id] = model.toJSON();
+      data[model.get('id') || model.get('_id')] = model.toJSON();
     }
 
     if( method === 'delete'){
       action = 'remove';
-      data = model.id;
+      data = model.get('id') || model.get('_id');
     }
 
     chrome.storage[target][action](data, function(resp){

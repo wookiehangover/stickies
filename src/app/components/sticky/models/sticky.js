@@ -12,12 +12,25 @@ define(function(require, exports, module){
 
     DEBOUNCE: 1e3,
 
+    idAttribute: '_id',
+
     initialize: function(){
       // if( !this.id ){
       //   this.set('id', 'sticky_'+Date.now(), { silent: true });
       // }
       this.throttledSave = _.throttle(this.save.bind(this), this.THROTTLE);
       this.debouncedSave = _.debounce(this.throttledSave.bind(this), this.DEBOUNCE);
+
+      this.on('change:id', this.setSlug, this);
+      this.setSlug();
+    },
+
+    setSlug: function(){
+      if( !this.id ){
+        return;
+      }
+      var slug = this.id.substr(0, 8).toLowerCase();
+      this.set({ slug: slug });
     },
 
     defaults: {

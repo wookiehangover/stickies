@@ -41,13 +41,17 @@ config =
         map:
           'components/github/main':
             'components/github/auth': 'components/github/chrome_identity'
+          'components/user/main':
+            'mixins/localstorage_sync': 'mixins/google_storage_sync'
+          'backbone-pouch':
+            'underscore': 'lodash'
     web:
       options:
         out: 'dist/scripts/stickies_web.js'
         include: ["main_web"],
         insertRequire: ["main_web"],
         map:
-          'localstorage':
+          'backbone-pouch':
             'underscore': 'lodash'
 
   connect:

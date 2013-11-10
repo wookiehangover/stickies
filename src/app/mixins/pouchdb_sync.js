@@ -3,9 +3,13 @@ define(function(require, exports, module){
   var PouchDB = require('pouchdb');
   var BackbonePouch = require('backbone-pouch');
 
-  var db = exports.db = new PouchDB('sticky');
+  var pouch = exports.db = new PouchDB('sticky');
 
   exports.sync = function(method, model, options){
+
+    var db = options.target === 'sync' && options.targetDB ?
+      options.targetDB : pouch;
+
     var sync = BackbonePouch.sync({
       db: db,
       options: {
@@ -15,13 +19,13 @@ define(function(require, exports, module){
       }
     });
 
-    if( options.target === 'sync' && options.targetDB ){
-      PouchDB.replicate('sticky', options.targetDB, {
-        complete: function(err, resp){
-          console.log(err, resp);
-        }
-      });
-    }
+    // if( options.target === 'sync' && options.targetDB ){
+    //   PouchDB.replicate('sticky', options.targetDB, {
+    //     complete: function(err, resp){
+    //       console.log(err, resp);
+    //     }
+    //   });
+    // }
     return sync.apply(this, arguments);
   };
 

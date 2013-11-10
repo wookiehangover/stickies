@@ -4,32 +4,56 @@ define(function(require, exports, module){
   'use strict';
   var $ = require('jquery');
   var _ = require('lodash');
+  var Backbone = require('backbone');
 
   var GithubAuth = require('components/github/main');
   var UserModel = require('components/user/main');
   var StickyModel = require('./models/sticky');
+  var Router = require('./router');
 
   var ViewModel = require('./views/main_view_model');
   var EditorView = require('./views/editor');
   var PreviewView = require('./views/preview');
   var SettingsView = require('./views/settings');
+  var dependencyNeedle = require('mixins/dependency_needle');
 
-  module.exports = ViewModel.extend({
+  var StickyController = ViewModel.extend({
     el: $('.sticky'),
 
-    initialize: function(options){
-      this.attachDependencies(options);
-      this.createSubViews();
-      ViewModel.prototype.initialize.apply(this, arguments);
+    dependencies: function(){
+      return ['db'];
     },
 
-    attachDependencies: function(){
+    initialize: function(options){
+      this.injectDependencies(options, this.dependencies());
+      this.attachDependencies(options);
+
+      this.createSubViews();
+      ViewModel.prototype.initialize.apply(this, arguments);
+      this.editor.render();
+      Backbone.history.start();
+
+      if( location.hash === "" ){
+        this.router.navigate(this.model.get('slug'), { replace: true });
+      }
+    },
+
+    render: function(options){
+      options = options || {};
+      if( options.navigate ){
+        this.router.navigate(this.model.get('slug'));
+      }
+      return ViewModel.prototype.render.apply(this, arguments);
+    },
+
+    attachDependencies: function(options){
       if( !this.model ){
         this.model = new StickyModel( window.stickyModel || {} );
       }
       this.github = new GithubAuth();
-      this.user = new UserModel();
+      this.user = new UserModel(null, options);
 
+      // TODO move this into the user model, injecting the db
       this.listenTo(this.user, 'replicate', function(){
         if( this.db && this.user.db ){
           this.db.replicate.from(this.user.db, {
@@ -39,6 +63,8 @@ define(function(require, exports, module){
           });
         }
       }, this);
+
+      this.router = new Router({ controller: this });
     },
 
     createSubViews: function(){
@@ -54,24 +80,24 @@ define(function(require, exports, module){
 
       this.settings = new SettingsView({
         el: this.$('.settings'),
-        model: this.model
+        model: this.model,
+        user: this.user
       });
     },
 
     showView: function(view){
-      this.save({ loader: false }).done(_.bind(function(){
-        this.hideActiveView();
-        this.dismissMenu();
-        this.activeView = view;
-        this.$el.addClass(view.name + '-active');
-        view.render();
-        view.$el.fadeIn();
-      }, this));
+      this.hideActiveView({ navigate: false });
+      this.dismissMenu();
+      this.activeView = view;
+      this.$el.addClass(view.name + '-active');
+      view.render();
+      this.router.navigate([view.name]);
+      view.$el.fadeIn();
     },
 
-    hideActiveView: function(){
+    hideActiveView: function(options){
       if( this.activeView ){
-        this.editor.render();
+        this.render(options);
         this.$el.removeClass(this.activeView.name + '-active');
         this.activeView.$el.fadeOut();
       }
@@ -102,9 +128,9 @@ define(function(require, exports, module){
       // TODO
       // trigger a modal to confirm
       this.model.destroy({ target: 'sync' })
-      // .done(function(){
-      //   window.close();
-      // });
+        .done(function(){
+          window.close();
+        });
     },
 
     spawn: function(data, options){
@@ -166,5 +192,8 @@ define(function(require, exports, module){
     }
   });
 
+  _.extend(StickyController.prototype, dependencyNeedle);
+
+  module.exports = StickyController;
 
 });

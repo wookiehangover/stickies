@@ -7,29 +7,42 @@ define(function(require, exports, module){
   var Backbone = require('backbone');
   var PouchDB = require('pouchdb');
 
+  var localstorageSync = require('mixins/localstorage_sync');
+
   module.exports = Backbone.Model.extend({
     constructor: function(){
       this.cookie = new Backbone.Model();
       return Backbone.Model.apply(this, arguments);
     },
 
-    initialize: function(){
-      this.on('change', function(model){
-        this.createStore();
-        localStorage.setItem('user', JSON.stringify(model));
-      }, this);
+    sync: localstorageSync.sync,
 
-      var cachedUser = localStorage.getItem('user');
-      if( cachedUser ){
-        this.ingest(JSON.parse(cachedUser));
+    initialize: function(){
+      if( !this.id ){
+        this.set('id', 'user');
       }
+
+      this.listenTo(this.cookie, 'change', this.createStore);
+
+      this.fetch().done(_.bind(function(data){
+        this.ingest(data);
+        this.createStore();
+      }, this));
     },
 
     createStore: function(){
-      var name = this.get('database');
-      this.db = new PouchDB( config.couch.host + name + '_stickies', {
-        headers: { 'x-auth': JSON.stringify(this.cookie.toJSON()) }
-      });
+      if( _.size(this.cookie.attributes) && this.get('database') ){
+        var name = this.get('database');
+        this.db = new PouchDB( config.couch.host + name + '_stickies', {
+          headers: { 'x-auth': JSON.stringify(this.cookie.toJSON()) }
+        });
+      }
+    },
+
+    logout: function(){
+      this.cookie.clear();
+      this.clear();
+      this.save({ id: 'user' });
     },
 
     parse: function(data){
@@ -52,7 +65,7 @@ define(function(require, exports, module){
       return this.set(this.parse(data), options);
     },
 
-    authRequest: function(type, username, password, options){
+    authenticate: function(username, password, options){
       var data = {
         auth: {
           name: username,
@@ -64,7 +77,7 @@ define(function(require, exports, module){
         data: JSON.stringify(data),
         dataType: 'json',
         contentType: 'application/json',
-        url: config.API_ROOT + '/' + type
+        url: config.API_ROOT + '/auth'
       }, options);
 
       var xhr = $.ajax(params);
@@ -75,18 +88,8 @@ define(function(require, exports, module){
       });
 
       return xhr;
-    },
+    }
 
-    signup: function(username, password, options){
-      this.authRequest('signup', username, password, options);
-    },
-
-    login: function(username, password, options){
-      var trigger = this.trigger;
-      this.authRequest('login', username, password, options).done(function(){
-        trigger('replicate');
-      });
-    },
   });
 
 });

@@ -8,10 +8,37 @@ require.config({
     'components/github/main': {
       'components/github/auth': 'components/github/chrome_identity'
     },
+    'components/user/main': {
+      'mixins/localstorage_sync': 'mixins/google_storage_sync'
+    },
     'backbone-pouch': {
       'underscore': 'lodash'
     }
   }
+});
+
+require(['require_config'], function(){
+  'use strict';
+  require([
+    'jquery',
+    'mixins/google_storage_sync',
+    'components/sticky/models/sticky',
+    './main'
+  ], function($, googleSync, StickyModel, init) {
+
+    var Model = StickyModel.extend({
+      sync: function(){
+        googleSync.sync.apply(this, arguments);
+        return StickyModel.prototype.sync.apply(this, arguments);
+      }
+    });
+
+    $(function(){
+      init({
+        model: new Model(window.stickyModel)
+      });
+    });
+  });
 });
 
 require(['require_config'], function(){
@@ -24,32 +51,6 @@ require(['require_config'], function(){
     'components/sticky/models/sticky',
     'main'
   ], function(Backbone, pouchSync, googleStorage, StickyModel, init) {
-    // All modules will persist to chrome.storage[local|sync]
-    Backbone.originalSync = Backbone.sync;
-    Backbone.sync = googleStorage.sync;
 
-    var PouchModel = Backbone.Model.extend({
-      idAttribute: '_id',
-      sync: pouchSync.sync,
-      ingest: function(model, options){
-        var attrs = model.omit('id');
-        return Backbone.Model.prototype.set.call(this, attrs, options);
-      }
-    });
-
-    var pouchModel = new PouchModel();
-    var model = new StickyModel( window.stickyModel );
-
-    pouchModel.listenTo(model, 'change', pouchModel.ingest);
-
-    pouchModel.listenTo(model, 'sync', function(model, resp, options){
-      if( options && options.target === 'sync' ){
-        pouchModel.save(null, { target: 'sync' });
-      }
-    });
-
-    init({
-      model: model
-    });
   });
 });
