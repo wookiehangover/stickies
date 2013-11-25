@@ -16,7 +16,12 @@ define(function(require, exports, module){
       this.$nav = this.$('.effeckt-off-screen-nav');
       this.$loader = this.$('#loader');
 
-      $(window).keydown(this.handleKeydown.bind(this));
+      $(window).keydown(_.bind(function(e){
+        if( this.idle ){
+          this.trigger('active');
+        }
+        this.handleKeydown(e);
+      }, this));
 
       this.updateBackgroundColor();
       this.updateTextColor();
@@ -80,7 +85,29 @@ define(function(require, exports, module){
       'click [data-action="edit"]': 'hidePreview',
       'click [data-action="settings"]': 'toggleSettings',
       'click [data-action="export"]': 'handleExport',
-      'click [data-action="email"]': 'handleEmail'
+      'click [data-action="email"]': 'handleEmail',
+      'mouseout': 'startIdleTimer',
+      'mouseenter': 'stopIdleTimer'
+    },
+
+    IDLE_TIME: 10e3,
+
+    stopIdleTimer: function(){
+      if( this.timer ){
+        clearTimeout(this.timer);
+        this.timer = false;
+      }
+      this.trigger('active');
+    },
+
+    startIdleTimer: function(){
+      if( this.timer ){
+        return;
+      }
+      console.log('started idle timer')
+      this.timer = setTimeout(_.bind(function(){
+        this.trigger('idle');
+      }, this), this.IDLE_TIME);
     },
 
     handleEmail: function(e){
@@ -109,7 +136,7 @@ define(function(require, exports, module){
 
     handleSave: function(e){
       this.save();
-      this.hideActiveView();
+      this.hideActiveView({ navigate: true });
       return false;
     },
 
@@ -136,13 +163,13 @@ define(function(require, exports, module){
     },
 
     hidePreview: function(e){
-      this.hideActiveView();
+      this.hideActiveView({ navigate: true });
       return false;
     },
 
     toggleSettings: function(){
       if( this.$el.hasClass('settings-active') ){
-        this.hideActiveView();
+        this.hideActiveView({ navigate: true });
       } else {
         this.showView(this.settings);
       }

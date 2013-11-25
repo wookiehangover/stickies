@@ -51,7 +51,9 @@ define(function(require, exports, module){
           .val(this.user.get('email'))
           .attr('disabled', true);
 
-        this.$('.sync-settings input[name="password"]').attr('disabled', true);
+        this.$('.sync-settings input[name="password"]')
+          .val('password')
+          .attr('disabled', true);
 
         this.$('.sync-settings :checkbox').attr('checked', true);
 
@@ -69,6 +71,7 @@ define(function(require, exports, module){
         this.$('.sync-settings :disabled').each(function(){
           $(this).attr('disabled', false);
         });
+        this.$('.sync-settings input[name="password"]').val('');
 
         this.$('.sync-settings .topcoat-notification').removeClass('ui-active').text('Sync Disabled');
       }
@@ -96,8 +99,8 @@ define(function(require, exports, module){
 
       if( _.size(auth) !== 0 && this.$('.sync-settings :checkbox').is(':checked') ){
         this.user.authenticate(auth.username, auth.password).then(_.bind(function(){
-          this.renderSync();
           this.user.save();
+          this.renderSync();
           console.log('success');
         },this), function(){
           console.log('error');

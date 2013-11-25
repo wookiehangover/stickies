@@ -5,6 +5,7 @@ define(function(require, exports, module){
   var $ = require('jquery');
   var _ = require('lodash');
   var Backbone = require('backbone');
+  var dependencyNeedle = require('mixins/dependency_needle');
 
   var GithubAuth = require('components/github/main');
   var UserModel = require('components/user/main');
@@ -12,10 +13,12 @@ define(function(require, exports, module){
   var Router = require('./router');
 
   var ViewModel = require('./views/main_view_model');
+  var NavView = require('./views/nav');
   var EditorView = require('./views/editor');
   var PreviewView = require('./views/preview');
   var SettingsView = require('./views/settings');
-  var dependencyNeedle = require('mixins/dependency_needle');
+  var ModalView = require('./views/modal');
+
 
   var StickyController = ViewModel.extend({
     el: $('.sticky'),
@@ -29,8 +32,11 @@ define(function(require, exports, module){
       this.attachDependencies(options);
 
       this.createSubViews();
+      this.attachListeners();
+
       ViewModel.prototype.initialize.apply(this, arguments);
       this.editor.render();
+      this.nav.render();
       Backbone.history.start();
 
       if( location.hash === "" ){
@@ -52,25 +58,59 @@ define(function(require, exports, module){
       }
       this.github = new GithubAuth();
       this.user = new UserModel(null, options);
-
-      // TODO move this into the user model, injecting the db
-      this.listenTo(this.user, 'replicate', function(){
-        if( this.db && this.user.db ){
-          this.db.replicate.from(this.user.db, {
-            complete: function(){
-              console.log('upstream replication complete');
-            }
-          });
-        }
-      }, this);
-
       this.router = new Router({ controller: this });
     },
 
+    attachListeners: function(){
+
+      var throttledPush = _.throttle(this.model.push, 20e3);
+      var throttledPull = _.throttle(this.model.pull, 10e3);
+
+      this.listenTo(this.user, 'db-created', function(){
+        this.model.replicate(this.user.db);
+      }, this);
+
+      this.on('active', function(){
+        if( this.user.db && this.idle === true ){
+          console.log('active');
+          this.idle = false;
+          if( this.user.db ){
+            this.showLoader('Syncing..');
+            throttledPull.call(this.model, this.user.db)
+              .done(_.bind(function(){
+                this.hideLoader(0);
+                this.render();
+              }, this));
+          }
+        }
+      }, this);
+
+      this.on('idle', function(){
+        console.log('idle');
+        this.idle = true;
+        if( this.user.db ){
+          this.showLoader('Syncing..');
+          throttledPush.call(this.model, this.user.db)
+            .done(_.bind(function(){
+              this.hideLoader(1);
+              this.render();
+            }, this));
+        }
+      });
+
+    },
+
     createSubViews: function(){
+      this.nav = new NavView({
+        el: this.$('.side-nav'),
+        collection: this.model.collection,
+        controller: this
+      });
+
       this.editor = new EditorView({
         el: this.$('.content'),
-        model: this.model
+        model: this.model,
+        controller: this
       });
 
       this.preview = new PreviewView({
@@ -83,6 +123,21 @@ define(function(require, exports, module){
         model: this.model,
         user: this.user
       });
+    },
+
+    showModal: function(options){
+      this.hideLoader(1);
+
+      this.$('#modal').addClass('ui-active');
+      if( this.modalView ){
+        this.modalView.remove();
+      }
+
+      this.modalView = new ModalView(options);
+    },
+
+    dismissModal: function(){
+      this.$('#modal').removeClass('ui-active');
     },
 
     showView: function(view){
@@ -149,9 +204,17 @@ define(function(require, exports, module){
         frame: 'none'
       });
 
-      chrome.app.window.create('sticky.html', options, function(child){
-        child.contentWindow.stickyModel = model.toJSON();
-      });
+      if( window.chrome && window.chrome.app && window.chrome.app.window ){
+        chrome.app.window.create('sticky.html', options, function(child){
+          child.contentWindow.stickyModel = model.toJSON();
+        });
+      } else {
+        var target = window.open('', '_blank');
+        model.save().done(function(data){
+          target.location = '/#'+ model.get('slug');
+        });
+      }
+
     },
 
     getStore: function(){
@@ -162,7 +225,6 @@ define(function(require, exports, module){
     save: function(options){
       options = _.defaults(options || {}, {
         target: 'sync',
-        targetDB: this.getStore(),
         loader: true
       });
 
@@ -175,12 +237,13 @@ define(function(require, exports, module){
       };
 
       var onComplete = _.bind(function(){
+        console.log('request complete')
         this.dismissMenu();
         this.hideLoader();
       }, this);
 
       var xhr = this.model.save(data, options)
-        .always(onComplete);
+        .then(onComplete, onComplete);
 
       return xhr;
     },

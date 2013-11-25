@@ -27,15 +27,18 @@ require(['require_config'], function(){
   ], function($, googleSync, StickyModel, init) {
 
     var Model = StickyModel.extend({
-      sync: function(){
-        googleSync.sync.apply(this, arguments);
+      sync: function(method, model, options){
+        if( method !== 'read' ){
+          googleSync.sync.apply(this, arguments);
+        }
         return StickyModel.prototype.sync.apply(this, arguments);
       }
     });
 
     $(function(){
       init({
-        model: new Model(window.stickyModel)
+        model: new Model(window.stickyModel),
+        StickyModel: Model
       });
     });
   });

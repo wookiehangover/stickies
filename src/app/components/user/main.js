@@ -26,7 +26,10 @@ define(function(require, exports, module){
 
       this.fetch().done(_.bind(function(data){
         this.ingest(data);
-        this.createStore();
+        var self = this;
+        _.defer(function(){
+          self.createStore();
+        });
       }, this));
     },
 
@@ -36,6 +39,7 @@ define(function(require, exports, module){
         this.db = new PouchDB( config.couch.host + name + '_stickies', {
           headers: { 'x-auth': JSON.stringify(this.cookie.toJSON()) }
         });
+        this.trigger('db-created');
       }
     },
 
@@ -83,6 +87,7 @@ define(function(require, exports, module){
       var xhr = $.ajax(params);
       xhr.then(_.bind(function(data){
         this.ingest(data);
+        this.createStore();
       }, this), function(jqXhr, statusText){
         console.log('Signup Error');
       });

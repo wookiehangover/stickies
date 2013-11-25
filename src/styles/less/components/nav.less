@@ -11,9 +11,22 @@
 
   &.effeckt-off-screen-nav-show {
     visibility: visible;
-    -webkit-transform: translateX(0%);
+    right: 12rem;
   }
 }
+
+.webapp {
+  @media (min-width: 940px) {
+    .effeckt-off-screen-nav {
+      width: 16rem;
+
+      &.effeckt-off-screen-nav-show {
+        right: 16rem;
+      }
+    }
+  }
+}
+
 
 @import "components/vendor/effeckt-off-screen-nav.autoprefixed.less";
 
@@ -31,6 +44,7 @@
     a {
       padding: 0 2px 0 0;
       display: inline-block;
+      width: ~"calc(100% - 2px)";
     }
   }
 
@@ -66,4 +80,16 @@
 
 }
 
+.side-nav {
+  list-style: none;
+  padding: 0;
+
+  li {
+    padding: 1em;
+    border-bottom: 1px dashed #969696;
+    small {
+      color: #969696;
+    }
+  }
+}
 

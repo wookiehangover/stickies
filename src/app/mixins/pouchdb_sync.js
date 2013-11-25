@@ -19,13 +19,6 @@ define(function(require, exports, module){
       }
     });
 
-    // if( options.target === 'sync' && options.targetDB ){
-    //   PouchDB.replicate('sticky', options.targetDB, {
-    //     complete: function(err, resp){
-    //       console.log(err, resp);
-    //     }
-    //   });
-    // }
     return sync.apply(this, arguments);
   };
 

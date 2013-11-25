@@ -529,6 +529,8 @@ i.icomatic {
 }
 .main-header a.menu {
   float: right;
+  width: 40%;
+  text-align: right;
 }
 .effeckt-off-screen-nav {
   position: fixed;
@@ -543,7 +545,15 @@ i.icomatic {
 }
 .effeckt-off-screen-nav.effeckt-off-screen-nav-show {
   visibility: visible;
-  -webkit-transform: translateX(0%);
+  right: 12rem;
+}
+@media (min-width: 940px) {
+  .webapp .effeckt-off-screen-nav {
+    width: 16rem;
+  }
+  .webapp .effeckt-off-screen-nav.effeckt-off-screen-nav-show {
+    right: 16rem;
+  }
 }
 .md-perspective,
 .md-perspective body {
@@ -2415,6 +2425,7 @@ i.icomatic {
 .topcoat-list__container .topcoat-list__header a {
   padding: 0 2px 0 0;
   display: inline-block;
+  width: calc(100% - 2px);
 }
 .topcoat-list__container .topcoat-list a > i {
   float: right;
@@ -2443,6 +2454,17 @@ i.icomatic {
 .topcoat-list__container .topcoat-list a[data-action="destroy"]:hover {
   color: red;
 }
+.side-nav {
+  list-style: none;
+  padding: 0;
+}
+.side-nav li {
+  padding: 1em;
+  border-bottom: 1px dashed #969696;
+}
+.side-nav li small {
+  color: #969696;
+}
 #loader {
   display: none;
   z-index: 1000;
@@ -2464,6 +2486,31 @@ i.icomatic {
 #loader span {
   font-size: 20px;
   line-height: 80px;
+}
+#modal {
+  display: none;
+  z-index: 1000;
+  width: 60%;
+  max-width: 400px;
+  height: 220px;
+  background: rgba(0, 0, 0, 0.8);
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+#modal.ui-active {
+  display: block;
+}
+#modal .modal-content button {
+  font-size: 1rem;
 }
 .preview {
   display: none;
@@ -2587,7 +2634,6 @@ nav .hide-preview {
   float: left;
   margin-left: 40px;
   width: 40%;
-  min-width: 280px;
 }
 .settings .description p {
   border-left: 1px solid #777777;
@@ -2599,6 +2645,9 @@ nav .hide-preview {
   -moz-transition: opacity 600ms ease-in 50ms;
   -o-transition: opacity 600ms ease-in 50ms;
   transition: opacity 600ms ease-in 50ms;
+}
+.settings .sync-settings .topcoat-notification {
+  margin-top: 1.2em;
 }
 .settings .sync-settings:hover p {
   opacity: 1;
@@ -2640,16 +2689,7 @@ nav .hide-preview {
   }
 }
 @media (min-width: 1327px) {
-  .webapp .main-header .menu {
-    display: none;
-  }
   .webapp .effeckt-off-screen-nav {
-    visibility: visible;
-    -webkit-transform: translate(0%, 0%);
-    -moz-transform: translate(0%, 0%);
-    -ms-transform: translate(0%, 0%);
-    -o-transform: translate(0%, 0%);
-    transform: translate(0%, 0%);
     -webkit-box-shadow: -1px 3px 8px rgba(0, 0, 0, 0.8);
     -moz-box-shadow: -1px 3px 8px rgba(0, 0, 0, 0.8);
     box-shadow: -1px 3px 8px rgba(0, 0, 0, 0.8);

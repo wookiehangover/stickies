@@ -14,7 +14,6 @@ define(function(require, exports, module){
       action = 'setItem';
       data = {};
       data.key = model.id;
-      console.log(model.toJSON())
       data.value = JSON.stringify(model.toJSON(options));
     }
 
@@ -45,5 +44,5 @@ define(function(require, exports, module){
     model.trigger('request', model, xhr, options);
     return xhr;
   };
-})
 
+});

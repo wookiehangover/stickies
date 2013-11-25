@@ -10,13 +10,6 @@ define(function(require, exports, module){
   Backbone.originalSync = Backbone.sync;
   Backbone.sync = pouchSync.sync;
 
-  var Stickies = Backbone.Collection.extend({
-    model: StickyModel,
-    idAttribute: '_id',
-    parse: function(resp){
-      return _.pluck(resp.rows, 'doc');
-    }
-  });
 
   module.exports = function(options){
 
@@ -24,14 +17,33 @@ define(function(require, exports, module){
       db: pouchSync.db
     });
 
+    var Stickies = Backbone.Collection.extend({
+      model: options.StickyModel || StickyModel,
+      idAttribute: '_id',
+      parse: function(resp){
+        console.log(resp);
+        return _.pluck(resp.rows, 'doc');
+      }
+    });
+
     if( window.stickyModel ){
-      window.sticky = new Sticky(options);
+      var stickies = window.stickies = new Stickies(_.without(window.stickyCollection, window.stickyModel));
+      stickies.fetch().done(function(){
+        options.model = stickies.findWhere({
+          _id: window.stickyModel._id
+        }) || stickies.add(window.stickyModel);
+        window.sticky = new Sticky(options);
+      });
+
     } else {
       var stickies = window.stickies = new Stickies();
       stickies.fetch().done(function(){
         options = options || {};
         if( stickies.length ){
-          options.model = stickies.last();
+          var fromHash = stickies.findWhere({
+            slug: location.hash.substr(1, Infinity)
+          });
+          options.model = fromHash || stickies.last();
         } else {
           var model = options.model = new stickies.model({
             content: '#Hello World!'

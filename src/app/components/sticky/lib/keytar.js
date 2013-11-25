@@ -64,6 +64,9 @@ define(function(require, exports, module){
         }
 
         var match = _.every(parts, function(modifier){
+          if( modifier === 'metaKey' && e.ctrlKey ){
+            return true;
+          }
           if( e[modifier] ){
             return true;
           }

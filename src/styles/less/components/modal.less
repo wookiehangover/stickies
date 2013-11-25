@@ -1,0 +1,27 @@
+#modal {
+  display: none;
+  z-index: 1000;
+  width: 60%;
+  max-width: 400px;
+  height: 220px;
+  background: rgba(0,0,0,0.8);
+  .border-radius(12px);
+  color: #fff;
+  text-align: center;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  &.ui-active {
+    display: block;
+  }
+
+  .modal-content {
+    button {
+      font-size: 1rem;
+    }
+  }
+}

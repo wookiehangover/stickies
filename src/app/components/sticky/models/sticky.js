@@ -3,25 +3,27 @@ define(function(require, exports, module){
   'use strict';
   var _ = require('lodash');
   var Backbone = require('backbone');
+  var pouchSync = require('mixins/pouchdb_sync');
 
   var listItemRegex = /- \[.\]/;
 
   var StickyModel = Backbone.Model.extend({
 
-    THROTTLE: 5e3,
+    THROTTLE: 30e3,
 
     DEBOUNCE: 1e3,
+
+    db: pouchSync.db,
 
     idAttribute: '_id',
 
     initialize: function(){
-      // if( !this.id ){
-      //   this.set('id', 'sticky_'+Date.now(), { silent: true });
-      // }
-      this.throttledSave = _.throttle(this.save.bind(this), this.THROTTLE);
+      this.throttledSave = _.throttle(this.set.bind(this), this.THROTTLE);
       this.debouncedSave = _.debounce(this.throttledSave.bind(this), this.DEBOUNCE);
-
-      this.on('change:id', this.setSlug, this);
+      this.on('change:_id', this.setSlug, this);
+      this.on('change:content', function(){
+        this.set('updated_at', Date.now());
+      }, this);
       this.setSlug();
     },
 
@@ -35,22 +37,53 @@ define(function(require, exports, module){
 
     defaults: {
       bg_color: 'light-bg',
-      text_color: 'dark-text'
+      text_color: 'dark-text',
+      content: '#Hello World!'
     },
 
-    set: function(key, val, options){
-      var attrs;
-      if (key == null) return this;
-
-      // Handle both `"key", value` and `{key: value}` -style arguments.
-      if (typeof key === 'object') {
-        attrs = key;
-      } else {
-        (attrs = {})[key] = val;
+    replicate: function(target){
+      if( !this.db || !navigator.onLine ){
+        return;
       }
 
-      attrs.updated_at = Date.now();
-      return Backbone.Model.prototype.set.call(this, attrs, options);
+      var options = {
+        // continuous: true,
+        onChange: function(change){
+          console.log(change);
+        },
+        // complete: function(){
+        //   console.log('replication successful');
+        // }
+      };
+
+      this.db.replicate.from(target, options);
+      this.db.replicate.to(target, options);
+    },
+
+    push: function(target){
+      if( !this.db || !navigator.onLine ){
+        return;
+      }
+
+      var dfd = $.Deferred();
+
+      this.save().done(_.bind(function(){
+        this.save(null, { target: 'sync', targetDB: target })
+          .done(_.bind(this.save, this))
+          .then(dfd.resolve, dfd.reject);
+      }, this));
+
+      return dfd.promise();
+    },
+
+    pull: function(target){
+      if( !this.db || !navigator.onLine ){
+        return;
+      }
+
+      return this.fetch({ target: 'sync', targetDB: target }).done(_.bind(function(data){
+        this.save(data);
+      }, this));
     },
 
     getTitle: function(){
