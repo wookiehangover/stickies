@@ -20,10 +20,10 @@ define(function(require, exports, module){
     initialize: function(){
       this.throttledSave = _.throttle(this.set.bind(this), this.THROTTLE);
       this.debouncedSave = _.debounce(this.throttledSave.bind(this), this.DEBOUNCE);
-      this.on('change:_id', this.setSlug, this);
-      this.on('change:content', function(){
-        this.set('updated_at', Date.now());
-      }, this);
+      // this.on('change:_id', this.setSlug, this);
+      // this.on('change:content', function(){
+      //   this.set('updated_at', Date.now());
+      // }, this);
       this.setSlug();
     },
 
@@ -47,17 +47,14 @@ define(function(require, exports, module){
       }
 
       var options = {
-        // continuous: true,
-        onChange: function(change){
-          console.log(change);
-        },
-        // complete: function(){
-        //   console.log('replication successful');
-        // }
+        continuous: true,
+        complete: function(err){
+          console.log(err);
+        }
       };
 
-      this.db.replicate.from(target, options);
       this.db.replicate.to(target, options);
+      this.db.replicate.from(target, options);
     },
 
     push: function(target){

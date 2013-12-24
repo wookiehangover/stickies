@@ -74,14 +74,7 @@ define(function(require, exports, module){
         if( this.user.db && this.idle === true ){
           console.log('active');
           this.idle = false;
-          if( this.user.db ){
-            this.showLoader('Syncing..');
-            throttledPull.call(this.model, this.user.db)
-              .done(_.bind(function(){
-                this.hideLoader(0);
-                this.render();
-              }, this));
-          }
+          this.render();
         }
       }, this);
 
@@ -89,12 +82,7 @@ define(function(require, exports, module){
         console.log('idle');
         this.idle = true;
         if( this.user.db ){
-          this.showLoader('Syncing..');
-          throttledPush.call(this.model, this.user.db)
-            .done(_.bind(function(){
-              this.hideLoader(1);
-              this.render();
-            }, this));
+          this.render();
         }
       });
 

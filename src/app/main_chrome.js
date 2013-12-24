@@ -43,17 +43,3 @@ require(['require_config'], function(){
     });
   });
 });
-
-require(['require_config'], function(){
-
-  'use strict';
-  require([
-    'backbone',
-    'mixins/pouchdb_sync',
-    'mixins/google_storage_sync',
-    'components/sticky/models/sticky',
-    'main'
-  ], function(Backbone, pouchSync, googleStorage, StickyModel, init) {
-
-  });
-});

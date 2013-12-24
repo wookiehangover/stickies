@@ -34,7 +34,6 @@ define(function(require, exports, module){
         }) || stickies.add(window.stickyModel);
         window.sticky = new Sticky(options);
       });
-
     } else {
       var stickies = window.stickies = new Stickies();
       stickies.fetch().done(function(){
